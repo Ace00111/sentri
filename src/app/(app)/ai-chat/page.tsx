@@ -68,23 +68,12 @@ export default function AIChat() {
           if (done) break
 
           const chunk = decoder.decode(value, { stream: true })
-          // Parse the data stream format: lines starting with 0: contain text
-          const lines = chunk.split('\n')
-          for (const line of lines) {
-            if (line.startsWith('0:')) {
-              try {
-                const text = JSON.parse(line.slice(2))
-                fullText += text
-                setMessages(prev => {
-                  const updated = [...prev]
-                  updated[updated.length - 1] = { ...updated[updated.length - 1], content: fullText }
-                  return updated
-                })
-              } catch {
-                // skip unparseable lines
-              }
-            }
-          }
+          fullText += chunk
+          setMessages(prev => {
+            const updated = [...prev]
+            updated[updated.length - 1] = { ...updated[updated.length - 1], content: fullText }
+            return updated
+          })
         }
       }
     } catch (error) {
