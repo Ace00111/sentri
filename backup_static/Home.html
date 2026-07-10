@@ -1,0 +1,333 @@
+<!DOCTYPE html><html class="scroll-smooth" lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Sentri | Your AI Copilot for Safer Crypto Decisions</title>
+<!-- Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: '#B7FF00', // Neon green accent
+            darkBg: '#050505',
+            cardBg: '#0D0D0D',
+            borderGray: '#1A1A1A',
+            textSecondary: '#A1A1AA'
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+<style data-purpose="custom-animations">
+    /* Subtle glow for the hero illustration */
+    .hero-glow {
+      background: radial-gradient(circle, rgba(183, 255, 0, 0.15) 0%, rgba(5, 5, 5, 0) 70%);
+    }
+    .neon-border-hover:hover {
+      border-color: #B7FF00;
+      box-shadow: 0 0 15px rgba(183, 255, 0, 0.1);
+    }
+    .step-number {
+      -webkit-text-stroke: 1px rgba(183, 255, 0, 0.3);
+      color: transparent;
+    }
+  </style>
+</head>
+<body class="bg-darkBg text-white font-sans antialiased">
+<!-- BEGIN: Navigation -->
+<nav class="fixed top-0 left-0 right-0 z-50 bg-darkBg/80 backdrop-blur-md border-b border-white/5">
+<div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+<!-- Logo -->
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 bg-brand rounded-md flex items-center justify-center"><img src="logo.jpg" alt="Sentri Logo" class="w-full h-full object-contain rounded-md"></div>
+<span class="text-xl font-bold tracking-tight">Sentri</span>
+</div>
+<!-- Links -->
+<div class="hidden md:flex items-center gap-8 text-sm font-medium text-textSecondary">
+<a class="hover:text-brand transition-colors" href="#features">Features</a>
+<a class="hover:text-brand transition-colors" href="#security">Security</a>
+<a class="hover:text-brand transition-colors" href="#docs">Docs</a>
+</div>
+<!-- Auth -->
+<div class="flex items-center gap-4">
+<button class="text-sm font-medium hover:text-brand transition-colors px-4">Log in</button>
+<button class="bg-brand text-black px-5 py-2.5 rounded-lg text-sm font-bold hover:opacity-90 transition-opacity">
+          Get Started
+        </button>
+</div>
+</div>
+</nav>
+<!-- END: Navigation -->
+<!-- BEGIN: HeroSection -->
+<section class="relative pt-40 pb-24 overflow-hidden">
+<div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+<!-- Left: Content -->
+<div data-purpose="hero-text-content">
+<h1 class="text-5xl lg:text-7xl font-extrabold leading-[1.1] mb-6">
+          Your AI Copilot <br> for <span class="text-brand">Safer</span> Crypto <br> Decisions.
+        </h1>
+<p class="text-lg text-textSecondary max-w-lg mb-10 leading-relaxed">
+          Analyze transactions, detect scams, research tokens, and protect your wallet with AI.
+        </p>
+<div class="flex flex-wrap gap-4">
+<button class="flex items-center gap-2 bg-brand text-black px-6 py-3.5 rounded-lg font-bold hover:scale-[1.02] transition-transform">
+<svg fill="none" height="20" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="20"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"></path><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"></path><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"></path></svg>
+            Connect Wallet
+          </button>
+<button class="flex items-center gap-2 bg-white/5 border border-white/10 hover:bg-white/10 px-6 py-3.5 rounded-lg font-bold transition-colors">
+<svg fill="currentColor" height="20" viewBox="0 0 24 24" width="20"><path d="m7 4 12 8-12 8V4z"></path></svg>
+            Watch Demo
+          </button>
+</div>
+</div>
+<!-- Right: Illustration -->
+<div class="relative flex justify-center items-center" data-purpose="hero-visual">
+<div class="hero-glow absolute w-[500px] h-[500px] rounded-full"></div>
+<!-- UI Elements Mockup -->
+<div class="relative w-full max-w-md aspect-square flex items-center justify-center">
+<!-- Main Diamond -->
+<div class="w-32 h-32 bg-brand rotate-45 rounded-2xl shadow-[0_0_50px_rgba(183,255,0,0.4)] flex items-center justify-center">
+<div class="-rotate-45">
+<svg fill="none" height="40" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="40"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path></svg>
+</div>
+</div>
+<!-- Floating Status 1 -->
+<div class="absolute top-0 right-0 bg-white/5 backdrop-blur-md border border-white/10 p-3 rounded-xl flex items-center gap-3">
+<div class="text-xs">
+<div class="text-textSecondary uppercase tracking-widest text-[10px]">Wallet Health</div>
+<div class="text-brand font-bold text-lg leading-none mt-1">92<span class="text-white/30 text-xs">/100</span></div>
+</div>
+</div>
+<!-- Floating Status 2 -->
+<div class="absolute top-10 left-0 bg-white/5 backdrop-blur-md border border-white/10 px-3 py-1.5 rounded-full flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-brand"></div>
+<span class="text-[10px] font-medium tracking-wide">Transaction Protected</span>
+</div>
+<!-- Floating Status 3 -->
+<div class="absolute bottom-10 right-4 bg-orange-500/10 border border-orange-500/20 px-3 py-1.5 rounded-lg flex items-center gap-2">
+<svg fill="none" height="12" stroke="#f97316" stroke-width="2" viewBox="0 0 24 24" width="12"><path d="m12 13 2-2 2 2-2 2Z"></path><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z"></path><path d="m12 8-1 1v4h2v-4l-1-1Z"></path></svg>
+<span class="text-[10px] font-bold text-orange-500">Risks Detected <span class="bg-orange-500 text-white px-1.5 py-0.5 rounded ml-1">2</span></span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: HeroSection -->
+<!-- BEGIN: StatsBar -->
+<section class="border-y border-white/5 py-16">
+<div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+<div>
+<div class="text-4xl font-bold mb-1">300K+</div>
+<div class="text-sm text-textSecondary">Transactions Analyzed</div>
+</div>
+<div>
+<div class="text-4xl font-bold mb-1">1K+</div>
+<div class="text-sm text-textSecondary">Wallets Protected</div>
+</div>
+<div>
+<div class="text-4xl font-bold mb-1 text-brand">95.6%</div>
+<div class="text-sm text-textSecondary">Detection Accuracy</div>
+</div>
+<div>
+<div class="text-4xl font-bold mb-1">24/7</div>
+<div class="text-sm text-textSecondary">AI Protection</div>
+</div>
+</div>
+</section>
+<!-- END: StatsBar -->
+<!-- BEGIN: FeaturesSection -->
+<section class="py-32" id="features">
+<div class="max-w-7xl mx-auto px-6">
+<div class="text-center mb-16">
+<span class="text-brand uppercase tracking-[0.2em] text-xs font-bold mb-4 block">Features</span>
+<h2 class="text-4xl md:text-5xl font-bold">Everything you need to trade safely</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Card 1 -->
+<div class="bg-cardBg p-8 rounded-2xl border border-white/5 hover:border-brand/30 transition-colors group">
+<div class="w-10 h-10 rounded-lg bg-brand/10 flex items-center justify-center mb-6 text-brand">
+<svg fill="none" height="20" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="20"><path d="M3 3v18h18"></path><path d="m19 9-5 5-4-4-3 3"></path></svg>
+</div>
+<h3 class="text-xl font-bold mb-3">Transaction Analyzer</h3>
+<p class="text-textSecondary text-sm leading-relaxed">
+            Explain every transaction before signing.
+          </p>
+</div>
+<!-- Card 2 -->
+<div class="bg-cardBg p-8 rounded-2xl border border-white/5 hover:border-brand/30 transition-colors group">
+<div class="w-10 h-10 rounded-lg bg-brand/10 flex items-center justify-center mb-6 text-brand">
+<svg fill="none" height="20" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="20"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+</div>
+<h3 class="text-xl font-bold mb-3">Token Research</h3>
+<p class="text-textSecondary text-sm leading-relaxed">
+            AI-powered insights into any crypto asset.
+          </p>
+</div>
+<!-- Card 3 -->
+<div class="bg-cardBg p-8 rounded-2xl border border-white/5 hover:border-brand/30 transition-colors group">
+<div class="w-10 h-10 rounded-lg bg-brand/10 flex items-center justify-center mb-6 text-brand">
+<svg fill="none" height="20" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="20"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path></svg>
+</div>
+<h3 class="text-xl font-bold mb-3">Scam Detection</h3>
+<p class="text-textSecondary text-sm leading-relaxed">
+            Detect phishing websites, malicious contracts, and fake tokens.
+          </p>
+</div>
+<!-- Card 4 -->
+<div class="bg-cardBg p-8 rounded-2xl border border-white/5 hover:border-brand/30 transition-colors group">
+<div class="w-10 h-10 rounded-lg bg-brand/10 flex items-center justify-center mb-6 text-brand">
+<svg fill="none" height="20" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="20"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+</div>
+<h3 class="text-xl font-bold mb-3">AI Copilot</h3>
+<p class="text-textSecondary text-sm leading-relaxed">
+            Ask anything about crypto security.
+          </p>
+</div>
+</div>
+</div>
+</section>
+<!-- END: FeaturesSection -->
+<!-- BEGIN: SecuritySection -->
+<section class="py-32 bg-darkBg" id="security">
+<div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+<div>
+<span class="text-brand uppercase tracking-[0.2em] text-xs font-bold mb-4 block">Security</span>
+<h2 class="text-4xl md:text-5xl font-bold mb-6">Built on a security-first foundation</h2>
+<p class="text-textSecondary text-lg leading-relaxed">
+          Sentri never holds your keys or funds. Every analysis runs against verified on-chain data and audited smart contract sources, so recommendations stay accurate and your wallet stays fully in your control.
+        </p>
+</div>
+<div class="space-y-4">
+<!-- List Item 1 -->
+<div class="flex items-center gap-4 bg-white/5 border border-white/5 p-5 rounded-xl">
+<div class="text-brand">
+<svg fill="none" height="24" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="24"><rect height="11" rx="2" ry="2" width="18" x="3" y="11"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+</div>
+<span class="font-medium">Non-custodial, we never hold your keys</span>
+</div>
+<!-- List Item 2 -->
+<div class="flex items-center gap-4 bg-white/5 border border-white/5 p-5 rounded-xl">
+<div class="text-brand">
+<svg fill="none" height="24" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="24"><path d="M2 12c0-4.4 3.6-8 8-8 2 0 3.8.7 5.3 2L12 9h9V0l-2.6 2.6A11.9 11.9 0 0 0 2 12Z"></path></svg>
+</div>
+<span class="font-medium">Real-time contract and phishing detection</span>
+</div>
+<!-- List Item 3 -->
+<div class="flex items-center gap-4 bg-white/5 border border-white/5 p-5 rounded-xl">
+<div class="text-brand">
+<svg fill="none" height="24" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="24"><rect height="11" rx="2" ry="2" width="18" x="3" y="11"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+</div>
+<span class="font-medium">End-to-end encrypted analysis, always</span>
+</div>
+</div>
+</div>
+</section>
+<!-- END: SecuritySection -->
+<!-- BEGIN: HowItWorks -->
+<section class="py-32">
+<div class="max-w-7xl mx-auto px-6">
+<div class="text-center mb-16">
+<span class="text-brand uppercase tracking-[0.2em] text-xs font-bold mb-4 block">How it works</span>
+<h2 class="text-4xl md:text-5xl font-bold">Protected in four simple steps</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Step 1 -->
+<div class="bg-cardBg p-10 rounded-2xl border border-white/5 relative overflow-hidden group">
+<div class="text-6xl font-black step-number mb-6 group-hover:text-brand/20 transition-colors">01</div>
+<h3 class="text-lg font-bold">Connect Wallet</h3>
+</div>
+<!-- Step 2 -->
+<div class="bg-cardBg p-10 rounded-2xl border border-white/5 relative overflow-hidden group">
+<div class="text-6xl font-black step-number mb-6 group-hover:text-brand/20 transition-colors">02</div>
+<h3 class="text-lg font-bold">Analyze Transaction</h3>
+</div>
+<!-- Step 3 -->
+<div class="bg-cardBg p-10 rounded-2xl border border-white/5 relative overflow-hidden group">
+<div class="text-6xl font-black step-number mb-6 group-hover:text-brand/20 transition-colors">03</div>
+<h3 class="text-lg font-bold">Receive AI Insights</h3>
+</div>
+<!-- Step 4 -->
+<div class="bg-cardBg p-10 rounded-2xl border border-white/5 relative overflow-hidden group">
+<div class="text-6xl font-black step-number mb-6 group-hover:text-brand/20 transition-colors">04</div>
+<h3 class="text-lg font-bold">Trade Safely</h3>
+</div>
+</div>
+</div>
+</section>
+<!-- END: HowItWorks -->
+<!-- BEGIN: CTA -->
+<section class="py-24 px-6">
+<div class="max-w-7xl mx-auto">
+<div class="bg-cardBg border border-white/5 rounded-[40px] py-20 px-8 text-center relative overflow-hidden">
+<!-- Subtle Glow -->
+<div class="absolute inset-0 hero-glow opacity-50 pointer-events-none"></div>
+<h2 class="text-4xl md:text-5xl font-bold mb-6 relative z-10">Start making safer crypto decisions today</h2>
+<p class="text-textSecondary mb-10 max-w-xl mx-auto relative z-10">
+          Join hundreds of thousands of traders protected by Sentri's AI.
+        </p>
+<button class="flex items-center gap-2 bg-brand text-black px-8 py-4 rounded-xl font-bold hover:scale-105 transition-transform mx-auto relative z-10">
+<svg fill="none" height="20" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="20"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"></path><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"></path><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"></path></svg>
+          Connect Wallet
+        </button>
+</div>
+</div>
+</section>
+<!-- END: CTA -->
+<!-- BEGIN: Footer -->
+<footer class="pt-24 pb-12 border-t border-white/5">
+<div class="max-w-7xl mx-auto px-6">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-20">
+<!-- Brand Info -->
+<div class="col-span-1 md:col-span-1">
+<div class="flex items-center gap-2 mb-6">
+<div class="w-6 h-6 bg-brand rounded flex items-center justify-center"><img src="logo.jpg" alt="Sentri Logo" class="w-full h-full object-contain rounded"></div>
+<span class="text-lg font-bold">Sentri</span>
+</div>
+<p class="text-sm text-textSecondary leading-relaxed">
+            Your AI Copilot for Safer Crypto Decisions.
+          </p>
+</div>
+<!-- Links Groups -->
+<div class="col-span-1">
+<h4 class="font-bold mb-6">Product</h4>
+<ul class="space-y-4 text-sm text-textSecondary">
+<li class=""><a class="hover:text-brand transition-colors" href="#">Features</a></li>
+<li class=""><a class="hover:text-brand transition-colors" href="#">Security</a></li>
+</ul>
+</div>
+<div class="col-span-1">
+<h4 class="font-bold mb-6">Docs</h4>
+<ul class="space-y-4 text-sm text-textSecondary">
+<li class="">X</li>
+</ul>
+</div>
+<div class="col-span-1">
+<h4 class="font-bold mb-6">Privacy</h4>
+<ul class="space-y-4 text-sm text-textSecondary">
+<li class=""><a class="hover:text-brand transition-colors" href="#">Community</a></li>
+</ul>
+</div>
+</div>
+<div class="pt-8 border-t border-white/5 text-xs text-textSecondary flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="">© 2026 Sentri. All rights reserved.</p>
+<div class="flex gap-6">
+
+
+</div>
+</div>
+</div>
+</footer>
+<!-- END: Footer -->
+
+
+
+
+</body></html>

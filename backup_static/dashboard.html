@@ -1,0 +1,298 @@
+<!DOCTYPE html><html class="dark" lang="en" style=""><head><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Sentri Dashboard</title>
+<!-- Tailwind CSS v3 CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Custom Configuration for Theme Colors -->
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            sentriGreen: '#B7FF00',
+            darkBg: '#0A0A0A',
+            cardBg: '#111111',
+            sidebarBg: '#050505',
+            mutedText: '#888888',
+            borderGray: '#222222'
+          }
+        }
+      }
+    }
+  </script>
+<style data-purpose="custom-styling">
+    body {
+      background-color: #0A0A0A;
+      color: #FFFFFF;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+    .circular-progress {
+      position: relative;
+      height: 140px;
+      width: 140px;
+      border-radius: 50%;
+      background: conic-gradient(#B7FF00 331.2deg, #222 0deg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .circular-progress::before {
+      content: "";
+      position: absolute;
+      height: 110px;
+      width: 110px;
+      border-radius: 50%;
+      background-color: #111111;
+    }
+    .chart-placeholder {
+      background: linear-gradient(180deg, rgba(183, 255, 0, 0.1) 0%, rgba(183, 255, 0, 0) 100%);
+      border: 1px solid rgba(183, 255, 0, 0.2);
+    }
+    .scrollbar-hide::-webkit-scrollbar {
+      display: none;
+    }
+    .scrollbar-hide {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="antialiased flex h-screen overflow-hidden">
+<!-- BEGIN: LeftSidebar -->
+<aside class="w-64 bg-sidebarBg border-r border-borderGray flex flex-col h-full overflow-y-auto scrollbar-hide"><!-- Logo Section -->
+<div class="p-6 flex items-center gap-3">
+  <img src="logo.jpg" alt="Sentri Logo" class="h-8 w-auto object-contain">
+  <span class="text-white text-2xl font-bold tracking-tight">Sentri</span>
+</div>
+
+<!-- Navigation Links -->
+<nav class="flex-1 px-4 py-4 space-y-2">
+  <a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-[#1a1a00] text-sentriGreen font-bold" href="#">
+    <span class="material-symbols-outlined">grid_view</span>
+    <span class="">Dashboard</span>
+  </a>
+  <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-mutedText hover:text-white transition-colors" href="#">
+    <span class="material-symbols-outlined">bar_chart</span>
+    <span class="font-medium">Analyze</span>
+  </a>
+  <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-mutedText hover:text-white transition-colors" href="#">
+    <span class="material-symbols-outlined">search</span>
+    <span class="font-medium">Research</span>
+  </a>
+  <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-mutedText hover:text-white transition-colors" href="#">
+    <span class="material-symbols-outlined">verified_user</span>
+    <span class="font-medium">Scam Checker</span>
+  </a>
+  <!-- Active Item: AI Chat -->
+  <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-mutedText hover:text-white transition-colors" href="#">
+    <span class="material-symbols-outlined">chat_bubble</span>
+    <span class="font-medium">AI Chat</span>
+  </a>
+  
+</nav>
+
+<!-- Settings Bottom -->
+<div class="p-4 mt-auto">
+  <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-mutedText hover:text-white transition-colors" href="#">
+    <span class="material-symbols-outlined">settings</span>
+    <span class="font-medium">Settings</span>
+  </a>
+</div></aside>
+<!-- END: LeftSidebar -->
+<!-- BEGIN: MainContent -->
+<main class="flex-1 overflow-y-auto bg-darkBg p-8 scrollbar-hide">
+<!-- BEGIN: TopBar -->
+<div class="flex justify-between items-center mb-10">
+<h1 class="text-3xl font-bold">Dashboard</h1>
+<!-- Wallet Pill -->
+<div class="bg-cardBg border border-borderGray rounded-full px-4 py-1.5 flex items-center gap-2">
+<span class="h-2 w-2 rounded-full bg-sentriGreen shadow-[0_0_8px_rgba(183,255,0,0.8)]"></span>
+<span class="text-sm font-mono">0xA3F2...9b7C</span>
+</div>
+</div>
+<!-- END: TopBar -->
+<!-- BEGIN: DashboardGrid -->
+<div class="grid grid-cols-12 gap-6">
+<!-- Left Column: Total Balance & Activity -->
+<div class="col-span-12 lg:col-span-8 space-y-6">
+<!-- BEGIN: BalanceCard -->
+<section class="bg-cardBg border border-borderGray rounded-2xl p-6" data-purpose="total-balance-card">
+<div class="flex justify-between items-start mb-4">
+<div>
+<p class="text-mutedText text-sm mb-1 font-medium">Total Balance</p>
+<div class="flex items-baseline gap-3">
+<h2 class="text-4xl font-bold">$12,420.85</h2>
+<span class="text-sentriGreen text-lg font-medium">+2.4%</span>
+</div>
+</div>
+<!-- Time Tabs -->
+<div class="bg-black/50 p-1 rounded-lg flex gap-1">
+<button class="px-3 py-1 bg-sentriGreen text-black text-xs font-bold rounded">1D</button>
+<button class="px-3 py-1 text-mutedText text-xs font-bold rounded hover:text-white">7D</button>
+<button class="px-3 py-1 text-mutedText text-xs font-bold rounded hover:text-white">30D</button>
+</div>
+</div>
+<!-- Area Chart Placeholder -->
+<div class="chart-placeholder w-full h-40 rounded-xl"></div>
+</section>
+<!-- END: BalanceCard -->
+<!-- BEGIN: RecentActivityCard -->
+<section class="bg-cardBg border border-borderGray rounded-2xl p-6" data-purpose="recent-activity">
+<div class="flex justify-between items-center mb-6">
+<h3 class="text-xl font-bold">Recent Activity</h3>
+<a class="text-mutedText text-sm hover:text-sentriGreen transition-colors" href="#">View all</a>
+</div>
+<div class="space-y-6">
+<!-- Swap Row -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-sentriGreen/10 flex items-center justify-center text-sentriGreen">
+<svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</div>
+<div>
+<p class="font-bold">Swap</p>
+<p class="text-mutedText text-xs">0xA1B2...C3D4</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-bold">- 0.5 ETH</p>
+<p class="text-mutedText text-xs">2 min ago</p>
+</div>
+</div>
+<!-- Approve Row -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-gray-500/10 flex items-center justify-center text-mutedText">
+<svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</div>
+<div>
+<p class="font-bold">Approve</p>
+<p class="text-mutedText text-xs">USDC · 0xE3F6...A798</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-mutedText text-xs">10 min ago</p>
+</div>
+</div>
+<!-- Receive Row -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-sentriGreen/10 flex items-center justify-center text-sentriGreen">
+<svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M19 14l-7 7m0 0l-7-7m7 7V3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</div>
+<div>
+<p class="font-bold">Receive</p>
+<p class="text-mutedText text-xs">0xC4D0...E1F2</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-bold text-sentriGreen">+1.2 USDT</p>
+<p class="text-mutedText text-xs">1h ago</p>
+</div>
+</div>
+</div>
+</section>
+<!-- END: RecentActivityCard -->
+</div>
+<!-- Right Column: Wallet Health & Risky Contracts -->
+<div class="col-span-12 lg:col-span-4 space-y-6">
+<!-- BEGIN: WalletHealthCard -->
+<section class="bg-cardBg border border-borderGray rounded-2xl p-6" data-purpose="wallet-health">
+<h3 class="text-lg font-bold mb-6">Wallet Health</h3>
+<div class="flex justify-center mb-8">
+<div class="circular-progress">
+<div class="relative z-10 text-center">
+<span class="text-3xl font-bold">92</span>
+<span class="text-mutedText text-xs">/100</span>
+<p class="text-sentriGreen text-[10px] font-bold uppercase tracking-widest mt-1">Good</p>
+</div>
+</div>
+</div>
+<div class="space-y-4">
+<div class="flex items-center gap-3">
+<span class="text-sentriGreen">
+<svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" fill-rule="evenodd"></path>
+</svg>
+</span>
+<span class="text-sm">No malicious approvals</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-yellow-500">
+<svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" fill-rule="evenodd"></path>
+</svg>
+</span>
+<span class="text-sm">2 risky contracts detected</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-sentriGreen">
+<svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" fill-rule="evenodd"></path>
+</svg>
+</span>
+<span class="text-sm">All systems secure</span>
+</div>
+</div>
+</section>
+<!-- END: WalletHealthCard -->
+<!-- BEGIN: RiskyContractsCard -->
+<section class="bg-cardBg border border-borderGray rounded-2xl p-6" data-purpose="risky-contracts">
+<h3 class="text-lg font-bold mb-6">Top Risky Contracts</h3>
+<div class="space-y-4 mb-6">
+<div class="flex justify-between items-center">
+<span class="font-mono text-sm">0x7f9c...8a9f</span>
+<span class="text-[10px] font-bold text-red-500 bg-red-500/10 px-2 py-0.5 rounded">High Risk</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-mono text-sm">0x9d1e...7d2a</span>
+<span class="text-[10px] font-bold text-orange-500 bg-orange-500/10 px-2 py-0.5 rounded">Medium Risk</span>
+</div>
+</div>
+<a class="text-mutedText text-sm hover:text-sentriGreen transition-colors" href="#">View all</a>
+</section>
+<!-- END: RiskyContractsCard -->
+</div>
+</div>
+<!-- END: DashboardGrid -->
+<!-- BEGIN: BottomStats -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+<!-- Gas Spent -->
+<div class="bg-cardBg border border-borderGray rounded-2xl p-6" data-purpose="stat-gas">
+<p class="text-mutedText text-sm mb-1">Gas Spent (30D)</p>
+<div class="flex items-baseline gap-2">
+<span class="text-2xl font-bold">$84.21</span>
+<span class="text-sentriGreen text-xs font-bold">-12.3%</span>
+</div>
+</div>
+<!-- Transactions -->
+<div class="bg-cardBg border border-borderGray rounded-2xl p-6" data-purpose="stat-transactions">
+<p class="text-mutedText text-sm mb-1">Transactions (30D)</p>
+<div class="flex items-baseline gap-2">
+<span class="text-2xl font-bold">48</span>
+<span class="text-sentriGreen text-xs font-bold">+8.1%</span>
+</div>
+</div>
+<!-- Assets -->
+<div class="bg-cardBg border border-borderGray rounded-2xl p-6" data-purpose="stat-assets">
+<p class="text-mutedText text-sm mb-1">Assets</p>
+<span class="text-2xl font-bold">12</span>
+</div>
+</div>
+<!-- END: BottomStats -->
+</main>
+<!-- END: MainContent -->
+
+
+
+
+
+
+</body></html>

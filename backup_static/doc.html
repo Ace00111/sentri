@@ -1,0 +1,343 @@
+<!DOCTYPE html><html lang="en" class="dark" style=""><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@600;700&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet"><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">try{
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed-variant": "#474746",
+                        "on-secondary": "#313030",
+                        "outline": "#8f9378",
+                        "error-container": "#93000a",
+                        "surface-variant": "#333535",
+                        "on-error": "#690005",
+                        "on-surface-variant": "#c5c9ac",
+                        "surface-bright": "#37393a",
+                        "on-primary": "#2a3400",
+                        "surface-tint": "#b0d500",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "secondary-fixed-dim": "#c8c6c5",
+                        "primary-fixed-dim": "#b0d500",
+                        "outline-variant": "#444932",
+                        "secondary": "#c8c6c5",
+                        "background": "#121414",
+                        "tertiary-container": "#e4e2e1",
+                        "on-tertiary-fixed": "#1b1c1c",
+                        "secondary-fixed": "#e5e2e1",
+                        "primary": "#ffffff",
+                        "inverse-primary": "#536600",
+                        "on-surface": "#e2e2e2",
+                        "on-primary-fixed": "#171e00",
+                        "on-primary-container": "#596c00",
+                        "on-tertiary-container": "#656464",
+                        "on-tertiary": "#303030",
+                        "on-secondary-fixed-variant": "#474746",
+                        "surface-container": "#1e2020",
+                        "tertiary-fixed": "#e4e2e1",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-high": "#282a2b",
+                        "surface-container-low": "#1a1c1c",
+                        "secondary-container": "#474746",
+                        "surface-container-highest": "#333535",
+                        "on-background": "#e2e2e2",
+                        "primary-container": "#caf300",
+                        "on-primary-fixed-variant": "#3e4c00",
+                        "inverse-surface": "#e2e2e2",
+                        "surface-container-lowest": "#0c0f0f",
+                        "on-secondary-container": "#b7b5b4",
+                        "error": "#ffb4ab",
+                        "surface": "#121414",
+                        "on-secondary-fixed": "#1c1b1b",
+                        "tertiary": "#ffffff",
+                        "surface-dim": "#121414",
+                        "inverse-on-surface": "#2f3131",
+                        "primary-fixed": "#caf300"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-md": "1rem",
+                        "content-max-width": "840px",
+                        "sidebar-width": "280px",
+                        "section-gap": "4rem",
+                        "stack-sm": "0.5rem",
+                        "gutter": "2rem"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Hanken Grotesk"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "label-mono": ["JetBrains Mono"]
+                    }
+                }
+            }
+        }
+    }catch(_e){}</script></head><body class="font-body-md overflow-x-hidden">
+
+    <!-- TopNavBar -->
+    <header class="fixed top-0 w-full z-50 bg-background border-b border-outline-variant">
+        <nav class="flex justify-between items-center h-16 px-gutter w-full max-w-[1440px] mx-auto">
+            <div class="flex items-center gap-2">
+                <img src="https://lh3.googleusercontent.com/aida/AP1WRLtQ7-iuatYfSpmz6MzC0I9w-8lKN0xlpx9oJ4rtxtUXcVGGJodn_x4cJgiuk1xS8Fa60wbQWNO5SPQ7cRBbMuvk50U5zBefp0rcJtwnBUN22xNdLP4cgwxFU7y0TK-dCltFmcu_JdzszSStilOrR4I0n5Alq3osspEYx5m9Br3GwGeJwGxp3xU5O-7pQ14EY5psJSmlhzI7vfTFV85Z8zvVy1XsRxIjGYKfbGdnP4Yyo1-pVevrvuklImBu" alt="Sentri Logo" class="h-8 w-8 rounded-full">
+                <span class="font-headline-md text-headline-md font-bold text-primary">Sentri</span>
+            </div>
+            
+            <div class="hidden md:flex gap-8 items-center">
+                <a href="#" class="text-primary font-bold border-b-2 border-primary pb-1 font-body-md">Docs</a>
+                
+                
+                
+            </div>
+
+            <button class="bg-primary-container text-on-primary-container px-6 py-2 rounded-full font-bold hover:opacity-90 transition-all duration-200">
+                Connect Wallet
+            </button>
+        </nav>
+    </header>
+
+    <div class="flex pt-16 min-h-screen">
+        <!-- SideNavBar -->
+        
+
+        <!-- Main Content Area -->
+        <main class="flex-1 lg:ml-sidebar-width px-6 md:px-12 py-12">
+            <div class="max-w-content-max-width mx-auto">
+                
+                <!-- Hero Section / Introduction -->
+                <section id="introduction" class="mb-section-gap scroll-mt-24">
+                    
+                    <h1 class="font-display-lg text-display-lg text-primary mb-6">What is Sentri?</h1>
+                    <p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed"><p data-start="0" data-end="155" class="PDq2pG_selectionAnchorContainer"><strong data-start="0" data-end="10">Sentri</strong> is an <strong data-start="17" data-end="55">AI-powered crypto security copilot</strong> that helps users understand and safely interact with blockchain transactions before they sign them.<span aria-hidden="true" class="PDq2pG_selectionAnchor"></span></p>
+<p data-start="157" data-end="400" class="">Instead of showing users confusing smart contract data, Sentri translates it into clear, human-readable explanations, detects potential risks, researches tokens, and provides AI-driven recommendations to help prevent scams and costly mistakes.</p><div><br></div><div class="">&nbsp;By combining real-time transaction analysis with advanced threat detection, Sentri provides a bulletproof layer of security between your wallet and the blockchain.
+                    </div></p>
+                    <div class="mt-10 flex gap-4">
+                        <button class="bg-primary-container text-on-primary-container px-8 py-3 rounded-full font-bold hover:scale-105 transition-transform">Get Started</button>
+                        
+                    </div>
+                </section>
+
+                <!-- Features Grid -->
+                <section id="features" class="mb-section-gap scroll-mt-24">
+                    <h2 class="font-headline-lg text-headline-lg text-primary mb-8">Features:</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Card 1 -->
+                        <div class="glass-card lime-glow p-8 rounded-xl transition-all duration-300">
+                            <div class="w-10 h-10 rounded-full bg-primary-container/10 flex items-center justify-center mb-6">
+                                <span class="material-symbols-outlined text-primary-container">analytics</span>
+                            </div>
+                            <h3 class="font-headline-md text-headline-md text-primary mb-3">Transaction Analyzer</h3>
+                            <ul class="space-y-2 text-on-surface-variant">
+                                <li class="flex items-start gap-2">
+                                    <span class="material-symbols-outlined text-primary-container text-sm mt-1">check_circle</span>
+                                    Simulate transactions before signing.
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="material-symbols-outlined text-primary-container text-sm mt-1">check_circle</span>
+                                    Identify hidden malicious callbacks.
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- Card 2 -->
+                        <div class="glass-card lime-glow p-8 rounded-xl transition-all duration-300">
+                            <div class="w-10 h-10 rounded-full bg-primary-container/10 flex items-center justify-center mb-6">
+                                <span class="material-symbols-outlined text-primary-container">search_check</span>
+                            </div>
+                            <h3 class="font-headline-md text-headline-md text-primary mb-3">Token Research</h3>
+                            <ul class="space-y-2 text-on-surface-variant">
+                                <li class="flex items-start gap-2">
+                                    <span class="material-symbols-outlined text-primary-container text-sm mt-1">check_circle</span>
+                                    Instant honeypot detection.
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="material-symbols-outlined text-primary-container text-sm mt-1">check_circle</span>
+                                    Liquidity and contract ownership audit.
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- Card 3 -->
+                        <div class="glass-card lime-glow p-8 rounded-xl transition-all duration-300">
+                            <div class="w-10 h-10 rounded-full bg-primary-container/10 flex items-center justify-center mb-6">
+                                <span class="material-symbols-outlined text-primary-container">warning</span>
+                            </div>
+                            <h3 class="font-headline-md text-headline-md text-primary mb-3">Scam Detection</h3>
+                            <ul class="space-y-2 text-on-surface-variant">
+                                <li class="flex items-start gap-2">
+                                    <span class="material-symbols-outlined text-primary-container text-sm mt-1">check_circle</span>
+                                    Phishing website blacklisting.
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="material-symbols-outlined text-primary-container text-sm mt-1">check_circle</span>
+                                    Social engineering warning system.
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- Card 4 -->
+                        <div class="glass-card lime-glow p-8 rounded-xl transition-all duration-300">
+                            <div class="w-10 h-10 rounded-full bg-primary-container/10 flex items-center justify-center mb-6">
+                                <span class="material-symbols-outlined text-primary-container">smart_toy</span>
+                            </div>
+                            <h3 class="font-headline-md text-headline-md text-primary mb-3">AI Copilot</h3>
+                            <ul class="space-y-2 text-on-surface-variant">
+                                <li class="flex items-start gap-2">
+                                    <span class="material-symbols-outlined text-primary-container text-sm mt-1">check_circle</span>
+                                    24/7 security monitoring.
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="material-symbols-outlined text-primary-container text-sm mt-1">check_circle</span>
+                                    Natural language security queries.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- How It Works -->
+                <section id="how-it-works" class="mb-section-gap scroll-mt-24">
+                    <h2 class="font-headline-lg text-headline-lg text-primary mb-8">The Sentri&nbsp; Workflow</h2>
+                    <div class="relative space-y-12 before:absolute before:left-[19px] before:top-0 before:h-full before:w-[1px] before:bg-outline-variant">
+                        <!-- Step 1 -->
+                        <div class="relative flex items-start gap-8">
+                            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-background border border-primary-container flex items-center justify-center z-10 font-label-mono text-primary-container">1</div>
+                            <div>
+                                <h4 class="font-headline-md text-primary mb-2">Connect Your Wallet</h4>
+                                <p class="text-on-surface-variant">Securely link your existing Web3 wallet via our encrypted bridge. Sentri never requests your private keys.</p>
+                            </div>
+                        </div>
+                        <!-- Step 2 -->
+                        <div class="relative flex items-start gap-8">
+                            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-background border border-primary-container flex items-center justify-center z-10 font-label-mono text-primary-container">2</div>
+                            <div>
+                                <h4 class="font-headline-md text-primary mb-2">Initialize Scanner</h4>
+                                <p class="text-on-surface-variant">The AI agent scans your recent history and current approvals to establish a security baseline.</p>
+                            </div>
+                        </div>
+                        <!-- Step 3 -->
+                        
+                        <!-- Step 4 -->
+                        <div class="relative flex items-start gap-8">
+                            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-background border border-primary-container flex items-center justify-center z-10 font-label-mono text-primary-container">3</div>
+                            <div>
+                                <h4 class="font-headline-md text-primary mb-2">Confirm &amp; Sign</h4>
+                                <p class="text-on-surface-variant">Connect your wallet to analyze, research, and transact with confidence.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Security Section -->
+                <section id="security" class="mb-section-gap scroll-mt-24 p-8 rounded-2xl bg-surface-container border border-outline-variant overflow-hidden relative">
+                    <div class="absolute -right-20 -top-20 w-64 h-64 bg-primary-container/5 rounded-full blur-3xl"></div>
+                    <div class="relative z-10">
+                        <h2 class="font-headline-lg text-headline-lg text-primary mb-6">Security &amp; Privacy First</h2>
+                        <p class="text-on-surface-variant mb-8 max-w-xl">We believe true security cannot exist without absolute privacy. Our architecture is built to protect your identity as much as your assets.</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="flex items-center gap-3">
+                                <span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1;">verified</span>
+                                <span class="font-body-md text-primary">Zero-Knowledge Proof Audits</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1;">verified</span>
+                                <span class="font-body-md text-primary">Client-Side Encryption</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1;">verified</span>
+                                <span class="font-body-md text-primary">Non-Custodial Architecture</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1;">verified</span>
+                                <span class="font-body-md text-primary">Open Source Core Protocols</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- FAQ -->
+                <section id="faq" class="mb-section-gap scroll-mt-24">
+                    <h2 class="font-headline-lg text-headline-lg text-primary mb-8">Frequently Asked Questions</h2>
+                    <div class="space-y-4">
+                        <!-- FAQ Item 1 -->
+                        <details class="group glass-card rounded-xl">
+                            <summary class="flex justify-between items-center p-6 cursor-pointer list-none">
+                                <span class="font-headline-md text-primary">Does Sentri store my private keys?</span>
+                                <span class="material-symbols-outlined transition-transform group-open:rotate-180">expand_more</span>
+                            </summary>
+                            <div class="px-6 pb-6 text-on-surface-variant border-t border-outline-variant pt-4">
+                                Absolutely not. Sentri is non-custodial and operates as a simulation layer. Your keys stay on your device or hardware wallet.
+                            </div>
+                        </details>
+                        <!-- FAQ Item 2 -->
+                        <details class="group glass-card rounded-xl" open="">
+                            <summary class="flex justify-between items-center p-6 cursor-pointer list-none">
+                                <span class="font-headline-md text-primary">Which blockchains are supported?</span>
+                                <span class="material-symbols-outlined transition-transform group-open:rotate-180">expand_more</span>
+                            </summary>
+                            <div class="px-6 pb-6 text-on-surface-variant border-t border-outline-variant pt-4">
+                                Currently, we support Ethereum, Binance Smart Chain, Polygon, and Arbitrum and others</div>
+                        </details>
+                        <!-- FAQ Item 3 -->
+                        <details class="group glass-card rounded-xl" open="">
+                            <summary class="flex justify-between items-center p-6 cursor-pointer list-none">
+                                <span class="font-headline-md text-primary">Is there a mobile app?</span>
+                                <span class="material-symbols-outlined transition-transform group-open:rotate-180">expand_more</span>
+                            </summary>
+                            <div class="px-6 pb-6 text-on-surface-variant border-t border-outline-variant pt-4">Not yet. We're focused on delivering the best web experience first, with browser extension and mobile support coming soon.</div>
+                        </details>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="w-full border-t border-outline-variant bg-surface-container-lowest">
+        <div class="max-w-[1440px] mx-auto py-gutter px-gutter flex flex-col md:flex-row justify-between items-center gap-stack-md">
+            <div class="flex flex-col gap-2">
+                <div class="flex items-center gap-2">
+                    <img src="https://lh3.googleusercontent.com/aida/AP1WRLtQ7-iuatYfSpmz6MzC0I9w-8lKN0xlpx9oJ4rtxtUXcVGGJodn_x4cJgiuk1xS8Fa60wbQWNO5SPQ7cRBbMuvk50U5zBefp0rcJtwnBUN22xNdLP4cgwxFU7y0TK-dCltFmcu_JdzszSStilOrR4I0n5Alq3osspEYx5m9Br3GwGeJwGxp3xU5O-7pQ14EY5psJSmlhzI7vfTFV85Z8zvVy1XsRxIjGYKfbGdnP4Yyo1-pVevrvuklImBu" alt="Sentri Logo" class="h-6 w-6 rounded-full">
+                    <span class="font-headline-md text-headline-md text-primary">Sentri</span>
+                </div>
+                <p class="text-on-surface-variant text-sm">© 2024 Sentri AI Security. All rights reserved.</p>
+            </div>
+            
+            <div class="flex flex-wrap justify-center gap-6">
+                <a href="#" class="text-on-surface-variant hover:text-primary underline decoration-primary transition-all font-body-md">Privacy Policy</a>
+                <a href="#" class="text-on-surface-variant hover:text-primary underline decoration-primary transition-all font-body-md">Terms of Service</a>
+                <a href="#" class="text-on-surface-variant hover:text-primary underline decoration-primary transition-all font-body-md">Github</a>
+                <a href="#" class="text-on-surface-variant hover:text-primary underline decoration-primary transition-all font-body-md">Twitter</a>
+                <a href="#" class="text-on-surface-variant hover:text-primary underline decoration-primary transition-all font-body-md">Contact Support</a>
+            </div>
+        </div>
+    </footer>
+
+    <script class="">
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Intersection Observer to update active state in sidebar
+        const observerOptions = {
+            root: null,
+            rootMargin: '-20% 0px -70% 0px',
+            threshold: 0
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+                    document.querySelectorAll('aside nav a').forEach(link => {
+                        const href = link.getAttribute('href').substring(1);
+                        if (href === id) {
+                            link.classList.add('text-primary</script></body></html>

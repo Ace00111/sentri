@@ -1,0 +1,238 @@
+<!DOCTYPE html><html class="h-full bg-black" lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Sentri - Token Research</title>
+<!-- Tailwind CSS v3 CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: '#CCFF00', // Lime green accent
+            surface: '#111111', // Card background
+            border: '#1F1F1F', // Card border
+            sidebar: '#0A0A0A', // Sidebar background
+          }
+        }
+      }
+    }
+  </script>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style data-purpose="global-styles">
+    body {
+      font-family: 'Inter', sans-serif;
+      color: #FFFFFF;
+      -webkit-font-smoothing: antialiased;
+    }
+    .custom-shadow {
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    }
+    /* Scrollbar Styling */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #000;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #333;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body class="h-full overflow-hidden flex">
+<!-- BEGIN: LeftSidebar -->
+<aside class="w-64 bg-sidebar border-r border-white/5 flex flex-col shrink-0" data-purpose="sidebar">
+<!-- Logo -->
+<div class="p-8 flex items-center gap-3">
+<div class="w-8 h-8 text-brand">
+<img alt="Sentri Logo" class="w-full h-full object-contain rounded-xl" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-4xBzlXxZrggyQIz8dYDVCZHc9M6efaklv2TWd2MJuThPM0-ZnVa0-swIrmzKQ4G-nZng1yiJmCmz1zoPQ6_QsxK-0nggSMQmiGV-kfGkWPI4u6YgmctzGBVUjv1TD-osaouRhX7HVuxPadu6gCHbx3pnzp0Tcq9ymYhX83cCtPBYfHywksQrtZLAFumn9eIT8rGOoXUS1ONfHzR_-5ByvFBOsA0n5-gW_oDJ2tnKoldBsu7pdTmmnA">
+</div>
+<span class="text-2xl font-bold tracking-tight">Sentri</span>
+</div>
+<!-- Navigation -->
+<nav class="flex-1 px-4 space-y-1"><a class="flex items-center gap-3 px-4 py-3 text-zinc-400 hover:text-white transition-colors" href="#"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span class="text-sm font-medium">Dashboard</span></a><a class="flex items-center gap-3 px-4 py-3 text-zinc-400 hover:text-white transition-colors" href="#"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span class="text-sm font-medium">Analyze</span></a><a class="flex items-center gap-3 px-4 py-3 rounded-xl bg-brand/10 text-brand" href="#"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span class="text-sm font-bold">Research</span></a><a class="flex items-center gap-3 px-4 py-3 text-zinc-400 hover:text-white transition-colors" href="#"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.040L3 20l9 2 9-2-1.382-14.016z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span class="text-sm font-medium">Scam Checker</span></a><a class="flex items-center gap-3 px-4 py-3 text-zinc-400 hover:text-white transition-colors" href="#"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span class="text-sm font-medium">AI Chat</span></a></nav>
+<div class="mt-auto px-4 pb-8"><a class="flex items-center gap-3 px-4 py-3 text-zinc-400 hover:text-white transition-colors" href="#"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span class="text-sm font-medium">Settings</span></a></div></aside>
+<!-- END: LeftSidebar -->
+<!-- BEGIN: MainContent -->
+<main class="flex-1 flex flex-col min-w-0 overflow-y-auto px-12 py-8" data-purpose="main-layout">
+<!-- Title -->
+<header class="mb-8">
+<h1 class="text-3xl font-bold text-white">Token Research</h1>
+</header>
+<!-- BEGIN: SearchBar -->
+<div class="mb-8" data-purpose="search-container">
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-zinc-500 group-focus-within:text-brand transition-colors">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</div>
+<input class="block w-full bg-surface border border-white/5 rounded-2xl py-4 pl-12 pr-4 text-white placeholder-zinc-500 focus:outline-none focus:ring-1 focus:ring-brand focus:border-brand transition-all" placeholder="Search any token, ticker, or contract address..." type="text">
+</div>
+</div>
+<!-- END: SearchBar -->
+<!-- BEGIN: HeroCard -->
+<div class="bg-surface border border-white/5 rounded-3xl p-6 mb-8 flex items-center justify-between" data-purpose="token-hero-card">
+<div class="flex items-center gap-6">
+<!-- Token Logo -->
+<div class="w-14 h-14 bg-brand rounded-full flex items-center justify-center text-black">
+<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path>
+</svg>
+</div>
+<div>
+<h2 class="text-xl font-bold">Ethereum • ETH</h2>
+<div class="flex items-center gap-2">
+<span class="text-2xl font-bold">$3,412.55</span>
+<span class="text-brand text-sm font-bold">+3.8%</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-brand font-bold text-sm tracking-wide">AI Verified</span>
+</div>
+</div>
+<!-- END: HeroCard -->
+<!-- BEGIN: StatsGrid -->
+<div class="grid grid-cols-4 gap-6 mb-8" data-purpose="stats-grid">
+<div class="bg-surface border border-white/5 rounded-2xl p-6">
+<p class="text-zinc-500 text-sm font-medium mb-1">Market Cap</p>
+<p class="text-2xl font-bold">$410.2B</p>
+</div>
+<div class="bg-surface border border-white/5 rounded-2xl p-6">
+<p class="text-zinc-500 text-sm font-medium mb-1">24h Volume</p>
+<p class="text-2xl font-bold">$18.6B</p>
+</div>
+<div class="bg-surface border border-white/5 rounded-2xl p-6">
+<p class="text-zinc-500 text-sm font-medium mb-1">Circulating Supply</p>
+<p class="text-2xl font-bold">120.3M ETH</p>
+</div>
+<div class="bg-surface border border-white/5 rounded-2xl p-6">
+<p class="text-zinc-500 text-sm font-medium mb-1">Holders</p>
+<p class="text-2xl font-bold">2.4M</p>
+</div>
+</div>
+<!-- END: StatsGrid -->
+<!-- BEGIN: MainContentContainer -->
+<div class="flex-1 bg-surface border border-white/5 rounded-3xl mb-8 relative overflow-hidden" data-purpose="graph-container" style="background: radial-gradient(circle at 50% 0%, rgba(204, 255, 0, 0.08) 0%, rgba(17, 17, 17, 1) 70%); min-height: 360px;"><div class="flex flex-col h-full w-full p-6">
+<!-- Chart Header: Timeframes -->
+<div class="flex items-center justify-between mb-6">
+<div class="flex gap-2">
+<button class="px-3 py-1 rounded-lg bg-brand/10 text-brand text-xs font-bold">1H</button>
+<button class="px-3 py-1 rounded-lg hover:bg-white/5 text-zinc-500 text-xs font-medium transition-colors">4H</button>
+<button class="px-3 py-1 rounded-lg hover:bg-white/5 text-zinc-500 text-xs font-medium transition-colors">1D</button>
+<button class="px-3 py-1 rounded-lg hover:bg-white/5 text-zinc-500 text-xs font-medium transition-colors">1W</button>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-brand"></div>
+<span class="text-xs text-zinc-400">ETH/USD</span>
+</div>
+<span class="text-xs font-bold text-white">$3,412.55</span>
+</div>
+</div>
+<!-- Main Chart Area -->
+<div class="flex-1 relative flex">
+<!-- Price Axis (Right) -->
+<div class="absolute right-0 top-0 bottom-8 w-12 flex flex-col justify-between text-[10px] text-zinc-600 border-l border-white/5 pl-2">
+<span class="">3,600</span>
+<span class="">3,500</span>
+<span class="text-brand font-bold">3,412</span>
+<span class="">3,300</span>
+<span class="">3,200</span>
+</div>
+<!-- Chart Canvas (SVG) -->
+<div class="flex-1 mr-12 mb-8 relative">
+<!-- Grid Lines -->
+<div class="absolute inset-0 flex flex-col justify-between pointer-events-none">
+<div class="border-b border-white/5 w-full h-0"></div>
+<div class="border-b border-white/5 w-full h-0"></div>
+<div class="border-b border-white/5 w-full h-0"></div>
+<div class="border-b border-white/5 w-full h-0"></div>
+</div>
+<!-- Candlesticks & Volume -->
+<svg class="w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 100">
+<!-- Volume Bars (Bottom 20%) -->
+<rect fill="#CCFF00" height="10" opacity="0.3" width="2" x="5" y="85"></rect>
+<rect fill="#CCFF00" height="15" opacity="0.3" width="2" x="15" y="80"></rect>
+<rect fill="#CCFF00" height="7" opacity="0.3" width="2" x="25" y="88"></rect>
+<rect fill="#CCFF00" height="20" opacity="0.3" width="2" x="35" y="75"></rect>
+<rect fill="#CCFF00" height="13" opacity="0.3" width="2" x="45" y="82"></rect>
+<rect fill="#CCFF00" height="25" opacity="0.3" width="2" x="55" y="70"></rect>
+<rect fill="#CCFF00" height="10" opacity="0.3" width="2" x="65" y="85"></rect>
+<rect fill="#CCFF00" height="17" opacity="0.3" width="2" x="75" y="78"></rect>
+<rect fill="#CCFF00" height="13" opacity="0.3" width="2" x="85" y="82"></rect>
+<!-- Candlesticks -->
+<!-- Green Candle -->
+<line stroke="#CCFF00" stroke-width="0.5" x1="16" x2="16" y1="60" y2="80"></line>
+<rect fill="#CCFF00" height="10" width="3" x="14.5" y="65"></rect>
+<!-- Green Candle -->
+<line stroke="#CCFF00" stroke-width="0.5" x1="36" x2="36" y1="40" y2="70"></line>
+<rect fill="#CCFF00" height="20" width="3" x="34.5" y="45"></rect>
+<!-- Red Candle (using zinc-600 for dark theme contrast) -->
+<line stroke="#52525b" stroke-width="0.5" x1="56" x2="56" y1="30" y2="50"></line>
+<rect fill="#52525b" height="10" width="3" x="54.5" y="35"></rect>
+<!-- Current Price Candle (Green) -->
+<line stroke="#CCFF00" stroke-width="0.5" x1="76" x2="76" y1="20" y2="45"></line>
+<rect fill="#CCFF00" height="15" width="3" x="74.5" y="25"></rect>
+<!-- Crosshair -->
+<line stroke="#CCFF00" stroke-dasharray="1,1" stroke-width="0.2" x1="0" x2="100" y1="32" y2="32"></line>
+<line stroke="#CCFF00" stroke-dasharray="1,1" stroke-width="0.2" x1="76" x2="76" y1="0" y2="100"></line>
+<circle cx="76" cy="32" fill="#CCFF00" r="1.5"></circle>
+</svg>
+</div>
+<!-- Time Axis (Bottom) -->
+<div class="absolute bottom-0 left-0 right-12 h-8 flex justify-between items-center text-[10px] text-zinc-600 border-t border-white/5 pr-4">
+<span class="">08:00</span>
+<span class="">12:00</span>
+<span class="">16:00</span>
+<span class="text-zinc-400">20:00</span>
+<span class="">00:00</span>
+</div>
+</div>
+</div></div>
+<!-- END: MainContentContainer -->
+<!-- BEGIN: BottomRow -->
+<div class="grid grid-cols-3 gap-8 pb-8">
+<!-- AI Summary -->
+<div class="col-span-2 bg-surface border border-white/5 rounded-3xl p-8" data-purpose="ai-summary-card">
+<div class="flex items-center gap-3 mb-4">
+<div class="text-brand">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</div>
+<h3 class="text-lg font-bold">AI Summary</h3>
+</div>
+<p class="text-zinc-400 leading-relaxed">
+          Ethereum shows strong network activity with steady inflows into staking. Liquidity is deep across major exchanges and the smart contract has no known vulnerabilities. Sentiment remains bullish heading into the next upgrade cycle.
+        </p>
+</div>
+<!-- Risk Analysis -->
+<div class="col-span-1 bg-surface border border-white/5 rounded-3xl p-8" data-purpose="risk-analysis-card">
+<h3 class="text-lg font-bold mb-6">Risk Analysis</h3>
+<div class="space-y-4">
+<div class="flex justify-between items-center">
+<span class="text-zinc-400 font-medium">Contract Audit</span>
+<span class="text-brand font-bold">Passed</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-zinc-400 font-medium">Liquidity Lock</span>
+<span class="text-brand font-bold">High</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-zinc-400 font-medium">Holder Concentration</span>
+<span class="text-orange-500 font-bold">Low</span>
+</div>
+</div>
+</div>
+</div>
+<!-- END: BottomRow -->
+</main>
+<!-- END: MainContent -->
+
+
+</body></html>
