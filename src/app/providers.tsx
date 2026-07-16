@@ -7,7 +7,11 @@ import { RainbowKitProvider, darkTheme } from '@rainbow-me/rainbowkit'
 import { useState } from 'react'
 import { LanguageProvider } from '@/contexts/LanguageContext'
 
-const config = createConfig({
+import { getDefaultConfig } from '@rainbow-me/rainbowkit'
+
+const config = getDefaultConfig({
+  appName: 'Sentri',
+  projectId: '3fcc6bba6f1de962d911bb5b5c3dba68', // Public dummy project ID for demo
   chains: [mainnet, base, arbitrum, optimism],
   transports: {
     [mainnet.id]: http(),
