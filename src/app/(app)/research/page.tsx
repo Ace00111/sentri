@@ -5,6 +5,7 @@ import { sendLocalNotification } from '@/utils/notifications'
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from 'recharts'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 type ChartPeriod = '1H' | '4H' | '1D' | '1W'
 
@@ -35,6 +36,7 @@ interface ResearchResult {
 }
 
 export default function Research() {
+  const { t } = useLanguage()
   const [searchQuery, setSearchQuery] = useState('')
   const [loading, setLoading] = useState(false)
   const [chartLoading, setChartLoading] = useState(false)
@@ -100,7 +102,7 @@ export default function Research() {
     <div className="flex-1 flex flex-col min-w-0" data-purpose="main-layout">
       {/* Title */}
       <header className="mb-8">
-        <h1 className="text-3xl font-bold text-white">Token Research</h1>
+        <h1 className="text-3xl font-bold text-white">{t('research')}</h1>
       </header>
 
       {/* BEGIN: SearchBar */}

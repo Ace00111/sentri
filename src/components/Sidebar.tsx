@@ -3,16 +3,18 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import Image from 'next/image'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 export default function Sidebar() {
   const pathname = usePathname()
+  const { t } = useLanguage()
 
   const links = [
-    { href: '/dashboard', label: 'Dashboard', icon: 'grid_view' },
-    { href: '/analyze', label: 'Analyze', icon: 'bar_chart' },
-    { href: '/research', label: 'Research', icon: 'search' },
+    { href: '/dashboard', label: t('dashboard'), icon: 'grid_view' },
+    { href: '/analyze', label: t('analyze'), icon: 'bar_chart' },
+    { href: '/research', label: t('research'), icon: 'search' },
     { href: '/scam-checker', label: 'Scam Checker', icon: 'verified_user' },
-    { href: '/ai-chat', label: 'AI Chat', icon: 'chat_bubble' },
+    { href: '/ai-chat', label: t('chat'), icon: 'chat_bubble' },
   ]
 
   return (
@@ -55,7 +57,7 @@ export default function Sidebar() {
           }`}
         >
           <span className="material-symbols-outlined">settings</span>
-          <span className={pathname === '/settings' ? '' : 'font-medium'}>Settings</span>
+          <span className={pathname === '/settings' ? '' : 'font-medium'}>{t('settings')}</span>
         </Link>
       </div>
     </aside>

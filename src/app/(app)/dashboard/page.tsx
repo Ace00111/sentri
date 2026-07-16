@@ -4,6 +4,7 @@ import { useAccount } from 'wagmi'
 import { useEffect, useState, useCallback } from 'react'
 import WalletPill from '@/components/WalletPill'
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 interface Activity {
   type: string
@@ -43,6 +44,7 @@ type Period = typeof PERIODS[number]
 
 export default function Dashboard() {
   const { address } = useAccount()
+  const { t } = useLanguage()
   const [data, setData] = useState<DashboardData | null>(null)
   const [loading, setLoading] = useState(false)
   const [period, setPeriod] = useState<Period>('1D')
@@ -87,7 +89,7 @@ export default function Dashboard() {
     <>
       {/* BEGIN: TopBar */}
       <div className="flex justify-between items-center mb-10">
-        <h1 className="text-3xl font-bold">Dashboard</h1>
+        <h1 className="text-3xl font-bold">{t('dashboard')}</h1>
         <WalletPill />
       </div>
       {/* END: TopBar */}
@@ -100,7 +102,7 @@ export default function Dashboard() {
           <section className="bg-cardBg border border-borderGray rounded-2xl p-6" data-purpose="total-balance-card">
             <div className="flex justify-between items-start mb-4">
               <div>
-                <p className="text-mutedText text-sm mb-1 font-medium">Total Balance</p>
+                <p className="text-mutedText text-sm mb-1 font-medium">{t('Total Balance')}</p>
                 <div className="flex items-baseline gap-3">
                   <h2 className="text-4xl font-bold">
                     {loading ? '...' : data ? `$${Number(data.balanceUsd).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : '$0.00'}
@@ -124,7 +126,7 @@ export default function Dashboard() {
             {/* Area Chart */}
             <div className="w-full h-44 mt-2">
               {loading ? (
-                <div className="flex items-center justify-center h-full text-mutedText text-sm animate-pulse">Loading chart...</div>
+                <div className="flex items-center justify-center h-full text-mutedText text-sm animate-pulse">{t('Loading chart...')}</div>
               ) : data && data.balanceHistory && data.balanceHistory.length > 1 ? (
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={data.balanceHistory} margin={{ top: 4, right: 0, left: 0, bottom: 0 }}>
@@ -173,11 +175,11 @@ export default function Dashboard() {
           {/* BEGIN: RecentActivityCard */}
           <section className="bg-cardBg border border-borderGray rounded-2xl p-6" data-purpose="recent-activity">
             <div className="flex justify-between items-center mb-6">
-              <h3 className="text-xl font-bold">Recent Activity</h3>
+              <h3 className="text-xl font-bold">{t('Recent Activity')}</h3>
               <a className="text-mutedText text-sm hover:text-sentriGreen transition-colors" href="#">View all</a>
             </div>
             {loading ? (
-              <div className="text-center py-8 text-mutedText animate-pulse">Loading transactions...</div>
+              <div className="text-center py-8 text-mutedText animate-pulse">{t('Loading transactions...')}</div>
             ) : data && data.activity.length > 0 ? (
               <div className="space-y-6">
                 {data.activity.map((tx, i) => (
@@ -207,9 +209,9 @@ export default function Dashboard() {
                 ))}
               </div>
             ) : address ? (
-              <div className="text-center py-8 text-mutedText">No recent activity found</div>
+              <div className="text-center py-8 text-mutedText">{t('No recent activity found')}</div>
             ) : (
-              <div className="text-center py-8 text-mutedText">Connect your wallet to view activity</div>
+              <div className="text-center py-8 text-mutedText">{t('Connect your wallet to view activity')}</div>
             )}
           </section>
           {/* END: RecentActivityCard */}
@@ -219,7 +221,7 @@ export default function Dashboard() {
         <div className="col-span-12 lg:col-span-4 space-y-6">
           {/* BEGIN: WalletHealthCard */}
           <section className="bg-cardBg border border-borderGray rounded-2xl p-6" data-purpose="wallet-health">
-            <h3 className="text-lg font-bold mb-6">Wallet Health</h3>
+            <h3 className="text-lg font-bold mb-6">{t('Wallet Health')}</h3>
             {address && data ? (
               <>
                 <div className="flex justify-center mb-8">
@@ -265,7 +267,7 @@ export default function Dashboard() {
               </>
             ) : (
               <div className="text-center py-8 text-mutedText">
-                {loading ? 'Loading...' : 'Connect your wallet to see health'}
+                {loading ? t('Loading...') : t('Connect your wallet to see health')}
               </div>
             )}
           </section>
@@ -273,7 +275,7 @@ export default function Dashboard() {
 
           {/* BEGIN: RiskyContractsCard */}
           <section className="bg-cardBg border border-borderGray rounded-2xl p-6" data-purpose="risky-contracts">
-            <h3 className="text-lg font-bold mb-6">Top Risky Contracts</h3>
+            <h3 className="text-lg font-bold mb-6">{t('Top Risky Contracts')}</h3>
             {address && data ? (
               <>
                 <div className="space-y-4 mb-6">
@@ -288,13 +290,13 @@ export default function Dashboard() {
                       </span>
                     </div>
                   )) : (
-                    <div className="text-sm text-mutedText text-center">No risky contracts found</div>
+                    <div className="text-sm text-mutedText text-center">{t('No risky contracts found')}</div>
                   )}
                 </div>
                 <a className="text-mutedText text-sm hover:text-sentriGreen transition-colors" href="#">View all</a>
               </>
             ) : (
-              <div className="text-sm text-mutedText text-center">{loading ? 'Loading...' : 'N/A'}</div>
+              <div className="text-sm text-mutedText text-center">{loading ? t('Loading...') : 'N/A'}</div>
             )}
           </section>
           {/* END: RiskyContractsCard */}
@@ -306,21 +308,21 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
         {/* Gas Spent */}
         <div className="bg-cardBg border border-borderGray rounded-2xl p-6" data-purpose="stat-gas">
-          <p className="text-mutedText text-sm mb-1">Gas Spent (recent txs)</p>
+          <p className="text-mutedText text-sm mb-1">{t('Gas Spent (recent txs)')}</p>
           <div className="flex items-baseline gap-2">
             <span className="text-2xl font-bold">{loading ? '...' : data ? data.gasSpentUsd : '$0.00'}</span>
           </div>
         </div>
         {/* Transactions */}
         <div className="bg-cardBg border border-borderGray rounded-2xl p-6" data-purpose="stat-transactions">
-          <p className="text-mutedText text-sm mb-1">Transactions (recent)</p>
+          <p className="text-mutedText text-sm mb-1">{t('Transactions (recent)')}</p>
           <div className="flex items-baseline gap-2">
             <span className="text-2xl font-bold">{loading ? '...' : data ? data.activity.length : '0'}</span>
           </div>
         </div>
         {/* Assets */}
         <div className="bg-cardBg border border-borderGray rounded-2xl p-6" data-purpose="stat-assets">
-          <p className="text-mutedText text-sm mb-1">Assets</p>
+          <p className="text-mutedText text-sm mb-1">{t('Assets')}</p>
           <span className="text-2xl font-bold">{loading ? '...' : data ? data.tokenCount : '0'}</span>
         </div>
       </div>

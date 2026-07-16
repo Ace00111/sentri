@@ -5,6 +5,7 @@ import { WagmiProvider, createConfig, http } from 'wagmi'
 import { mainnet, base, arbitrum, optimism } from 'wagmi/chains'
 import { RainbowKitProvider, darkTheme } from '@rainbow-me/rainbowkit'
 import { useState } from 'react'
+import { LanguageProvider } from '@/contexts/LanguageContext'
 
 const config = createConfig({
   chains: [mainnet, base, arbitrum, optimism],
@@ -27,7 +28,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
           accentColorForeground: 'black',
           borderRadius: 'medium',
         })}>
-          {children}
+          <LanguageProvider>
+            {children}
+          </LanguageProvider>
         </RainbowKitProvider>
       </QueryClientProvider>
     </WagmiProvider>

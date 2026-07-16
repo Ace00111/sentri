@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { sendLocalNotification } from '@/utils/notifications'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 interface ChatMessage {
   id: string
@@ -10,6 +11,7 @@ interface ChatMessage {
 }
 
 export default function AIChat() {
+  const { t } = useLanguage()
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: '1',
@@ -105,7 +107,7 @@ export default function AIChat() {
           </svg>
         </div>
         <div>
-          <h1 className="text-xl font-bold">Sentri AI</h1>
+          <h1 className="text-xl font-bold">{t('chat')}</h1>
           <p className="text-sm text-mutedText">Your crypto security assistant</p>
         </div>
       </header>
@@ -151,7 +153,7 @@ export default function AIChat() {
             onChange={e => setInput(e.target.value)}
             onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSubmit(e); } }}
             className="w-full bg-[#1A1A1A] border border-zinc-800 text-white rounded-2xl py-5 pl-6 pr-16 focus:outline-none focus:ring-1 focus:ring-sentriGreen/50 focus:border-sentriGreen/50 placeholder:text-zinc-600 transition-all" 
-            placeholder="Ask Sentri anything about crypto security..." 
+            placeholder={t('askSentri')} 
             type="text"
             autoComplete="off"
           />

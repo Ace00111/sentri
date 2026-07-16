@@ -2,10 +2,12 @@
 
 import { useState } from 'react'
 import { sendLocalNotification } from '@/utils/notifications'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 export default function Analyze() {
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
+  const { t } = useLanguage()
   const [result, setResult] = useState<{
     riskScore: string;
     status: string;
@@ -44,7 +46,7 @@ export default function Analyze() {
     <div className="max-w-6xl mx-auto space-y-8">
       {/* BEGIN: Header */}
       <header>
-        <h1 className="text-3xl font-bold text-white tracking-tight">Transaction Analyzer</h1>
+        <h1 className="text-3xl font-bold text-white tracking-tight">{t('transactionAnalyzer')}</h1>
       </header>
       {/* END: Header */}
 
@@ -56,7 +58,7 @@ export default function Analyze() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               className="w-full bg-darkBg border-none rounded-lg py-3 px-4 text-white placeholder-zinc-600 focus:ring-1 focus:ring-sentriGreen/50 text-sm" 
-              placeholder="Paste a transaction hash or wallet address..." 
+              placeholder={t('searchPlaceholder')} 
               type="text" 
             />
           </div>
@@ -72,7 +74,7 @@ export default function Analyze() {
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"></path>
                 </svg>
-                Analyze
+                {t('analyze')}
               </>
             )}
           </button>
@@ -86,7 +88,7 @@ export default function Analyze() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Risk Score Card */}
             <div className="bg-cardBg border border-zinc-800/50 rounded-xl p-12 flex flex-col items-center justify-center text-center" data-purpose="risk-score-card">
-              <span className="text-mutedText text-xs font-semibold uppercase tracking-widest mb-8">Risk Score</span>
+              <span className="text-mutedText text-xs font-semibold uppercase tracking-widest mb-8">{t('riskScore')}</span>
               <div className="flex flex-col items-center gap-8">
                 <span className={`text-6xl font-bold tracking-tighter ${result.riskScore === 'Low' ? 'text-sentriGreen' : 'text-red-500'}`}>
                   {result.riskScore}
