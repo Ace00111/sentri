@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { sendLocalNotification } from '@/utils/notifications'
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from 'recharts'
@@ -66,7 +67,10 @@ export default function Research() {
       setLoading(true)
       setResult(null)
       const data = await fetchResult(searchQuery, PERIOD_DAYS[chartPeriod])
-      if (data) setResult(data)
+      if (data) {
+        setResult(data)
+        sendLocalNotification(`Research Completed: ${data.name}`, `Current Price: ${data.price}. 24h Change: ${data.change}`)
+      }
       setLoading(false)
     }
   }

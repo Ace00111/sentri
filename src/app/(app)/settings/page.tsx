@@ -3,6 +3,7 @@
 import { useAccount, useDisconnect } from 'wagmi'
 import { useConnectModal } from '@rainbow-me/rainbowkit'
 import { useState, useEffect } from 'react'
+import { requestNotificationPermission } from '@/utils/notifications'
 
 export default function Settings() {
   const { address, isConnected } = useAccount()
@@ -26,6 +27,9 @@ export default function Settings() {
     const newVal = !notifications
     setNotifications(newVal)
     localStorage.setItem('sentri_notifications', String(newVal))
+    if (newVal) {
+      requestNotificationPermission()
+    }
   }
 
   const cycleLanguage = () => {
@@ -99,22 +103,6 @@ export default function Settings() {
             className={`w-14 h-8 rounded-full relative flex items-center px-1 transition-colors ${notifications ? 'bg-sentriGreen' : 'bg-zinc-700'}`}
           >
             <div className={`w-6 h-6 bg-black rounded-full shadow-md transition-transform ${notifications ? 'ml-auto' : 'mr-auto'}`}></div>
-          </button>
-        </div>
-
-        {/* API Keys */}
-        <div className="bg-darkBg/50 border border-white/5 rounded-2xl p-6 flex items-center justify-between" data-purpose="setting-api">
-          <div className="flex items-center gap-4">
-            <div className="text-sentriGreen">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
-            </div>
-            <div>
-              <h3 className="font-semibold text-lg">API Keys</h3>
-              <p className="text-mutedText text-sm">sk_live_••••••••7f2a</p>
-            </div>
-          </div>
-          <button className="px-6 py-2 bg-[#1A1A1A] border border-white/10 rounded-xl text-sm font-medium hover:bg-white/10 transition-colors">
-            Regenerate
           </button>
         </div>
 

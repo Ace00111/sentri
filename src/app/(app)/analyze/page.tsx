@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { sendLocalNotification } from '@/utils/notifications'
 
 export default function Analyze() {
   const [input, setInput] = useState('')
@@ -30,6 +31,7 @@ export default function Analyze() {
       }
       const data = await res.json()
       setResult(data)
+      sendLocalNotification(`Analysis Completed`, `Risk Score: ${data.riskScore}. Recommendation: ${data.recommendation}`)
     } catch (e) {
       console.error(e)
       alert('Failed to analyze. Make sure you entered a valid transaction hash (e.g. 0x...).')

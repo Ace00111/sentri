@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
+import { sendLocalNotification } from '@/utils/notifications'
 
 interface ChatMessage {
   id: string
@@ -75,6 +76,7 @@ export default function AIChat() {
             return updated
           })
         }
+        sendLocalNotification('Sentri AI Chat', fullText.substring(0, 100) + '...')
       }
     } catch (error) {
       console.error('Chat error:', error)
