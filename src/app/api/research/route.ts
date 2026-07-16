@@ -1,5 +1,5 @@
 import { groq } from '@ai-sdk/groq'
-import { generateObject } from 'ai'
+import { generateText } from 'ai'
 import { z } from 'zod'
 import { getOkxClient } from '@/utils/okx'
 
@@ -122,45 +122,49 @@ export async function POST(req: Request) {
     }
 
     // Generate security assessment with OKX signature indicators
-    const { object } = await generateObject({
-      model: groq('llama-3.1-8b-instant'),
-      schema: z.object({
-        aiSummary: z.string().describe("A concise 2-sentence summary of the token's fundamentals and risks. Avoid generic AI phrases."),
-        strengths: z.array(z.string()).max(3).describe("Up to 3 short bullet points of strengths (e.g. 'Verified contract')."),
-        risks: z.array(z.string()).max(3).describe("Up to 3 short bullet points of risks (e.g. 'Low liquidity')."),
-        riskScore: z.number().min(0).max(100).describe("A risk score from 0 (very risky) to 100 (very safe)."),
-        riskLevel: z.enum(["Low Risk", "Medium Risk", "High Risk"]),
-        riskReason: z.string().describe("A very short reason for the risk score (e.g., 'Based on liquidity and contract')."),
-        securityChecks: z.object({
-          smartContract: z.enum(["Verified", "Unverified"]),
-          ownership: z.enum(["Renounced", "Owner privileges active"]),
-          mintFunction: z.enum(["Not detected", "Detected"]),
-          blacklistFunction: z.enum(["Not detected", "Detected"]),
-          honeypotCheck: z.enum(["Passed", "Failed"]),
-          proxyContract: z.enum(["Not detected", "Detected"]),
-        }),
-        holderAnalysis: z.object({
-          top10Percentage: z.number().describe("Percentage held by top 10 wallets"),
-          lpPercentage: z.number().describe("Percentage in Liquidity Pool"),
-          othersPercentage: z.number().describe("Percentage held by others"),
-          warning: z.string().describe("A short warning if highly concentrated, else empty string. Example: 'Large wallet concentration detected'"),
-        }),
-        liquidityHealth: z.object({
-          dex: z.string().describe("Primary DEX name e.g. Uniswap"),
-          liquidityAmount: z.string().describe("Formatted liquidity amount e.g. $350K"),
-          lpStatus: z.enum(["Locked", "Unlocked"]),
-          trading: z.enum(["Healthy", "Volatile", "Suspicious"]),
-        }),
-        verdict: z.object({
-          status: z.enum(["SAFE TO EXPLORE", "PROCEED WITH CAUTION", "DO NOT INTERACT"]),
-          message: z.string().describe("A concise 1-2 sentence verdict. Professional tone."),
-        })
-      }),
-      system: 'You are an AI crypto security analyst integrated with OKX Onchain OS. Check the token contract security audit indicators. Be brief, highly professional, data-driven, and write concise security recommendations. Do not use flowery language. Output hard facts.',
+    const { text } = await generateText({
+      model: groq('llama-3.3-70b-versatile'),
+      system: `You are an AI crypto security analyst integrated with OKX Onchain OS. Check the token contract security audit indicators. Be brief, highly professional, data-driven, and write concise security recommendations. Do not use flowery language. Output hard facts.
+      
+You MUST return ONLY a valid JSON object with EXACTLY the following structure (do not include markdown formatting or backticks around the JSON):
+{
+  "aiSummary": "A concise 2-sentence summary of the token's fundamentals and risks.",
+  "strengths": ["Up to 3 short bullet points"],
+  "risks": ["Up to 3 short bullet points"],
+  "riskScore": 75, // number from 0 to 100
+  "riskLevel": "Low Risk", // "Low Risk", "Medium Risk", or "High Risk"
+  "riskReason": "Short reason for score",
+  "securityChecks": {
+    "smartContract": "Verified", // "Verified" or "Unverified"
+    "ownership": "Renounced", // "Renounced" or "Owner privileges active"
+    "mintFunction": "Not detected", // "Not detected" or "Detected"
+    "blacklistFunction": "Not detected", // "Not detected" or "Detected"
+    "honeypotCheck": "Passed", // "Passed" or "Failed"
+    "proxyContract": "Not detected" // "Not detected" or "Detected"
+  },
+  "holderAnalysis": {
+    "top10Percentage": 45, // number
+    "lpPercentage": 35, // number
+    "othersPercentage": 20, // number
+    "warning": "Warning if highly concentrated, else empty string."
+  },
+  "liquidityHealth": {
+    "dex": "Uniswap",
+    "liquidityAmount": "$350K",
+    "lpStatus": "Locked", // "Locked" or "Unlocked"
+    "trading": "Healthy" // "Healthy", "Volatile", or "Suspicious"
+  },
+  "verdict": {
+    "status": "SAFE TO EXPLORE", // "SAFE TO EXPLORE", "PROCEED WITH CAUTION", or "DO NOT INTERACT"
+    "message": "A concise 1-2 sentence verdict."
+  }
+}`,
       prompt: `Token: ${coinName} (${coinSymbol})
 Price: ${coinPrice} | 24h Change: ${coinPercentChange}
 Description: ${coinDescription}`
     })
+
+    const object = JSON.parse(text)
 
     return new Response(JSON.stringify({
       name: coinName,
