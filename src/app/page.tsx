@@ -20,17 +20,19 @@ export default function Home() {
           <div className="hidden md:flex items-center gap-8 text-sm font-medium text-textSecondary">
             <a className="hover:text-brand transition-colors" href="#features">Features</a>
             <a className="hover:text-brand transition-colors" href="#security">Security</a>
-            <a className="hover:text-brand transition-colors" href="#docs">Docs</a>
+            <a className="hover:text-brand transition-colors" href="/doc.html">Docs</a>
           </div>
           {/* Auth */}
           <div className="flex items-center gap-4">
-            <button className="text-sm font-medium hover:text-brand transition-colors px-4">Log in</button>
             <ConnectButton.Custom>
               {({ account, chain, openAccountModal, openChainModal, openConnectModal, mounted }) => {
                 const ready = mounted
                 const connected = ready && account && chain
                 return (
-                  <div {...(!ready && { 'aria-hidden': true, style: { opacity: 0, pointerEvents: 'none', userSelect: 'none' } })}>
+                  <div className="flex items-center gap-4" {...(!ready && { 'aria-hidden': true, style: { opacity: 0, pointerEvents: 'none', userSelect: 'none' } })}>
+                    {!connected && (
+                      <button onClick={openConnectModal} className="text-sm font-medium hover:text-brand transition-colors px-4">Log in</button>
+                    )}
                     {(() => {
                       if (!connected) {
                         return (

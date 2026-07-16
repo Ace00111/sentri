@@ -1,8 +1,9 @@
 'use client'
 
 import { useAccount } from 'wagmi'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import WalletPill from '@/components/WalletPill'
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 
 interface Activity {
   type: string
@@ -21,47 +22,66 @@ interface Approval {
   asset: string
 }
 
+interface BalancePoint {
+  time: string
+  value: number
+}
+
 interface DashboardData {
   balanceEth: string
   balanceUsd: string
+  balanceHistory: BalancePoint[]
   activity: Activity[]
   tokenCount: number
   approvals: Approval[]
   walletHealth: number
+  gasSpentUsd: string
 }
+
+const PERIODS = ['1D', '7D', '30D'] as const
+type Period = typeof PERIODS[number]
 
 export default function Dashboard() {
   const { address } = useAccount()
   const [data, setData] = useState<DashboardData | null>(null)
   const [loading, setLoading] = useState(false)
+  const [period, setPeriod] = useState<Period>('1D')
+
+  const fetchData = useCallback(async (addr: string, p: Period) => {
+    setLoading(true)
+    try {
+      const res = await fetch('/api/dashboard', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ address: addr, period: p })
+      })
+      if (res.ok) {
+        const json = await res.json()
+        setData(json)
+      }
+    } catch (e) {
+      console.error('Failed to fetch dashboard data:', e)
+    } finally {
+      setLoading(false)
+    }
+  }, [])
 
   useEffect(() => {
-    if (!address) {
-      setData(null)
-      return
-    }
+    if (!address) { setData(null); return }
+    fetchData(address, period)
+  }, [address, period, fetchData])
 
-    const fetchData = async () => {
-      setLoading(true)
-      try {
-        const res = await fetch('/api/dashboard', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ address })
-        })
-        if (res.ok) {
-          const json = await res.json()
-          setData(json)
-        }
-      } catch (e) {
-        console.error('Failed to fetch dashboard data:', e)
-      } finally {
-        setLoading(false)
-      }
+  const CustomTooltip = ({ active, payload, label }: any) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="bg-cardBg border border-white/10 rounded-lg px-3 py-2 text-xs">
+          <p className="text-mutedText mb-1">{label}</p>
+          <p className="font-bold text-sentriGreen">${Number(payload[0].value).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+        </div>
+      )
     }
-
-    fetchData()
-  }, [address])
+    return null
+  }
 
   return (
     <>
@@ -83,20 +103,70 @@ export default function Dashboard() {
                 <p className="text-mutedText text-sm mb-1 font-medium">Total Balance</p>
                 <div className="flex items-baseline gap-3">
                   <h2 className="text-4xl font-bold">
-                    {loading ? '...' : data ? `$${Number(data.balanceUsd).toLocaleString()}` : '$0.00'}
+                    {loading ? '...' : data ? `$${Number(data.balanceUsd).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : '$0.00'}
                   </h2>
                   {data && <span className="text-sentriGreen text-lg font-medium">{data.balanceEth} ETH</span>}
                 </div>
               </div>
               {/* Time Tabs */}
               <div className="bg-black/50 p-1 rounded-lg flex gap-1">
-                <button className="px-3 py-1 bg-sentriGreen text-black text-xs font-bold rounded">1D</button>
-                <button className="px-3 py-1 text-mutedText text-xs font-bold rounded hover:text-white">7D</button>
-                <button className="px-3 py-1 text-mutedText text-xs font-bold rounded hover:text-white">30D</button>
+                {PERIODS.map(p => (
+                  <button
+                    key={p}
+                    onClick={() => setPeriod(p)}
+                    className={`px-3 py-1 text-xs font-bold rounded transition-all ${period === p ? 'bg-sentriGreen text-black' : 'text-mutedText hover:text-white'}`}
+                  >
+                    {p}
+                  </button>
+                ))}
               </div>
             </div>
-            {/* Area Chart Placeholder */}
-            <div className="chart-placeholder w-full h-40 rounded-xl"></div>
+            {/* Area Chart */}
+            <div className="w-full h-44 mt-2">
+              {loading ? (
+                <div className="flex items-center justify-center h-full text-mutedText text-sm animate-pulse">Loading chart...</div>
+              ) : data && data.balanceHistory && data.balanceHistory.length > 1 ? (
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={data.balanceHistory} margin={{ top: 4, right: 0, left: 0, bottom: 0 }}>
+                    <defs>
+                      <linearGradient id="balGradient" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#B7FF00" stopOpacity={0.25} />
+                        <stop offset="95%" stopColor="#B7FF00" stopOpacity={0} />
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" vertical={false} />
+                    <XAxis
+                      dataKey="time"
+                      tick={{ fill: '#6B7280', fontSize: 10 }}
+                      tickLine={false}
+                      axisLine={false}
+                      interval="preserveStartEnd"
+                    />
+                    <YAxis
+                      tick={{ fill: '#6B7280', fontSize: 10 }}
+                      tickLine={false}
+                      axisLine={false}
+                      width={60}
+                      tickFormatter={v => `$${v >= 1000 ? (v / 1000).toFixed(1) + 'k' : v.toFixed(0)}`}
+                    />
+                    <Tooltip content={<CustomTooltip />} />
+                    <Area
+                      type="monotone"
+                      dataKey="value"
+                      stroke="#B7FF00"
+                      strokeWidth={2}
+                      fill="url(#balGradient)"
+                      dot={false}
+                      activeDot={{ r: 4, fill: '#B7FF00', stroke: '#111', strokeWidth: 2 }}
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              ) : (
+                <div className="flex items-center justify-center h-full">
+                  <div className="chart-placeholder w-full h-full rounded-xl" />
+                </div>
+              )}
+            </div>
           </section>
           {/* END: BalanceCard */}
 
@@ -236,23 +306,22 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
         {/* Gas Spent */}
         <div className="bg-cardBg border border-borderGray rounded-2xl p-6" data-purpose="stat-gas">
-          <p className="text-mutedText text-sm mb-1">Gas Spent (30D)</p>
+          <p className="text-mutedText text-sm mb-1">Gas Spent (recent txs)</p>
           <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-bold">{data ? '$84.21' : '$0.00'}</span>
-            {data && <span className="text-sentriGreen text-xs font-bold">-12.3%</span>}
+            <span className="text-2xl font-bold">{loading ? '...' : data ? data.gasSpentUsd : '$0.00'}</span>
           </div>
         </div>
         {/* Transactions */}
         <div className="bg-cardBg border border-borderGray rounded-2xl p-6" data-purpose="stat-transactions">
-          <p className="text-mutedText text-sm mb-1">Transactions (30D)</p>
+          <p className="text-mutedText text-sm mb-1">Transactions (recent)</p>
           <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-bold">{data ? data.activity.length : '0'}</span>
+            <span className="text-2xl font-bold">{loading ? '...' : data ? data.activity.length : '0'}</span>
           </div>
         </div>
         {/* Assets */}
         <div className="bg-cardBg border border-borderGray rounded-2xl p-6" data-purpose="stat-assets">
           <p className="text-mutedText text-sm mb-1">Assets</p>
-          <span className="text-2xl font-bold">{data ? data.tokenCount : '0'}</span>
+          <span className="text-2xl font-bold">{loading ? '...' : data ? data.tokenCount : '0'}</span>
         </div>
       </div>
       {/* END: BottomStats */}

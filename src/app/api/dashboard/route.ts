@@ -2,7 +2,7 @@ export const maxDuration = 30
 
 export async function POST(req: Request) {
   try {
-    const { address } = await req.json()
+    const { address, period = '1D' } = await req.json()
 
     if (!address) {
       return new Response(JSON.stringify({ error: 'Missing wallet address' }), { status: 400 })
@@ -13,7 +13,15 @@ export async function POST(req: Request) {
       ? `https://eth-mainnet.g.alchemy.com/v2/${apiKey}`
       : 'https://eth.llamarpc.com'
 
-    // 1. Fetch ETH balance
+    // 1. Fetch live ETH price from CoinGecko
+    let ethPrice = 3400
+    try {
+      const priceRes = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd')
+      const priceData = await priceRes.json()
+      ethPrice = priceData?.ethereum?.usd || 3400
+    } catch { /* fallback to 3400 */ }
+
+    // 2. Fetch current ETH balance
     const balRes = await fetch(rpcUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -28,57 +36,98 @@ export async function POST(req: Request) {
     const balWei = BigInt(balData.result || '0x0')
     const balEth = Number(balWei) / 1e18
 
-    // 2. Fetch recent transactions via Alchemy's alchemy_getAssetTransfers
-    let transfers: any[] = []
+    // 3. Fetch all transfers (in + out) for history & activity
+    let outgoing: any[] = []
+    let incoming: any[] = []
+    let allTransfers: any[] = []
+
     if (apiKey) {
-      const transferRes = await fetch(`https://eth-mainnet.g.alchemy.com/v2/${apiKey}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          jsonrpc: '2.0',
-          method: 'alchemy_getAssetTransfers',
-          params: [{
-            fromAddress: address,
-            category: ['external', 'erc20', 'erc721'],
-            maxCount: '0x5',
-            order: 'desc',
-            withMetadata: true,
-          }],
-          id: 1,
+      const [outRes, inRes] = await Promise.all([
+        fetch(rpcUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            jsonrpc: '2.0',
+            method: 'alchemy_getAssetTransfers',
+            params: [{
+              fromAddress: address,
+              category: ['external', 'erc20', 'erc721'],
+              maxCount: '0x14',
+              order: 'desc',
+              withMetadata: true,
+            }],
+            id: 1,
+          })
+        }),
+        fetch(rpcUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            jsonrpc: '2.0',
+            method: 'alchemy_getAssetTransfers',
+            params: [{
+              toAddress: address,
+              category: ['external', 'erc20', 'erc721'],
+              maxCount: '0x14',
+              order: 'desc',
+              withMetadata: true,
+            }],
+            id: 1,
+          })
         })
-      })
-      const transferData = await transferRes.json()
-      const outgoing = (transferData.result?.transfers || []).map((t: any) => ({ ...t, direction: 'out' }))
-
-      const incomingRes = await fetch(`https://eth-mainnet.g.alchemy.com/v2/${apiKey}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          jsonrpc: '2.0',
-          method: 'alchemy_getAssetTransfers',
-          params: [{
-            toAddress: address,
-            category: ['external', 'erc20', 'erc721'],
-            maxCount: '0x5',
-            order: 'desc',
-            withMetadata: true,
-          }],
-          id: 1,
-        })
-      })
-      const incomingData = await incomingRes.json()
-      const incoming = (incomingData.result?.transfers || []).map((t: any) => ({ ...t, direction: 'in' }))
-
-      // Merge and sort by blockNum descending
-      transfers = [...outgoing, ...incoming]
+      ])
+      const outData = await outRes.json()
+      const inData = await inRes.json()
+      outgoing = (outData.result?.transfers || []).map((t: any) => ({ ...t, direction: 'out' }))
+      incoming = (inData.result?.transfers || []).map((t: any) => ({ ...t, direction: 'in' }))
+      allTransfers = [...outgoing, ...incoming]
         .sort((a, b) => parseInt(b.blockNum, 16) - parseInt(a.blockNum, 16))
-        .slice(0, 5)
     }
 
-    // 3. Fetch token balances via Alchemy
+    // 4. Build balance history for chart
+    const now = Date.now()
+    const periodMs = period === '1D' ? 86400000 : period === '7D' ? 7 * 86400000 : 30 * 86400000
+    const buckets = period === '1D' ? 24 : period === '7D' ? 7 : 30
+    const bucketMs = periodMs / buckets
+
+    // Walk back in time: start from current balance, undo transfers
+    let runningBalEth = balEth
+    const relevantTransfers = allTransfers
+      .filter(t => {
+        const ts = t.metadata?.blockTimestamp ? new Date(t.metadata.blockTimestamp).getTime() : 0
+        return ts > now - periodMs
+      })
+      .sort((a, b) => {
+        const ta = a.metadata?.blockTimestamp ? new Date(a.metadata.blockTimestamp).getTime() : 0
+        const tb = b.metadata?.blockTimestamp ? new Date(b.metadata.blockTimestamp).getTime() : 0
+        return tb - ta // newest first
+      })
+
+    // Build time buckets
+    const bucketData: { time: string; value: number }[] = []
+    for (let i = buckets - 1; i >= 0; i--) {
+      const bucketEnd = now - i * bucketMs
+      // Undo transfers that happened after this bucket end
+      for (const t of relevantTransfers) {
+        const ts = t.metadata?.blockTimestamp ? new Date(t.metadata.blockTimestamp).getTime() : 0
+        if (ts > bucketEnd) {
+          const val = t.asset === 'ETH' ? (t.value || 0) : 0
+          if (t.direction === 'in') runningBalEth -= val
+          else runningBalEth += val
+        }
+      }
+      const label = period === '1D'
+        ? new Date(bucketEnd).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })
+        : new Date(bucketEnd).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+      bucketData.push({ time: label, value: Math.max(0, runningBalEth * ethPrice) })
+    }
+    // Restore running balance and add current
+    bucketData[bucketData.length - 1].value = balEth * ethPrice
+
+    // 5. Fetch token balances
     let tokenCount = 0
     if (apiKey) {
-      const tokenRes = await fetch(`https://eth-mainnet.g.alchemy.com/v2/${apiKey}`, {
+      const tokenRes = await fetch(rpcUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -94,29 +143,12 @@ export async function POST(req: Request) {
       ).length
     }
 
-    // 4. Fetch recent ERC20 Approval events (topic0 for Approval)
+    // 6. ERC20 interactions for risky contracts panel
     let approvals: any[] = []
     if (apiKey) {
       try {
-        const approvalRes = await fetch(`https://eth-mainnet.g.alchemy.com/v2/${apiKey}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            jsonrpc: '2.0',
-            method: 'alchemy_getAssetTransfers',
-            params: [{
-              fromAddress: address,
-              category: ['erc20'],
-              maxCount: '0xa',
-              order: 'desc',
-              withMetadata: true,
-            }],
-            id: 1,
-          })
-        })
-        const approvalData = await approvalRes.json()
         const uniqueContracts = new Map<string, any>()
-        for (const t of (approvalData.result?.transfers || [])) {
+        for (const t of outgoing) {
           if (t.rawContract?.address && !uniqueContracts.has(t.rawContract.address)) {
             uniqueContracts.set(t.rawContract.address, {
               address: t.rawContract.address,
@@ -127,18 +159,49 @@ export async function POST(req: Request) {
         }
         approvals = Array.from(uniqueContracts.values()).slice(0, 3)
       } catch (e) {
-        console.error('Failed to fetch approvals:', e)
+        console.error('Failed to compute approvals:', e)
       }
     }
 
-    // Format transfers for frontend
-    const activity = transfers.map((t: any) => {
+    // 7. Compute Gas Spent (30D) — fetch external outgoing txs and sum gas
+    let gasSpentEth = 0
+    let gasSpentUsd = '0.00'
+    if (apiKey) {
+      try {
+        const externalOut = outgoing.filter(t => t.category === 'external').slice(0, 15)
+        const receiptPromises = externalOut.map(t =>
+          fetch(rpcUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              jsonrpc: '2.0',
+              method: 'eth_getTransactionReceipt',
+              params: [t.hash],
+              id: 1,
+            })
+          }).then(r => r.json()).catch(() => null)
+        )
+        const receipts = await Promise.all(receiptPromises)
+        for (const r of receipts) {
+          if (r?.result) {
+            const gasUsed = parseInt(r.result.gasUsed || '0x0', 16)
+            const gasPrice = parseInt(r.result.effectiveGasPrice || '0x0', 16)
+            gasSpentEth += (gasUsed * gasPrice) / 1e18
+          }
+        }
+        gasSpentUsd = (gasSpentEth * ethPrice).toFixed(2)
+      } catch (e) {
+        console.error('Failed to compute gas spent:', e)
+      }
+    }
+
+    // 8. Format activity for display
+    const activity = allTransfers.slice(0, 5).map((t: any) => {
       const isIncoming = t.direction === 'in'
       const asset = t.asset || 'ETH'
       const value = t.value != null ? Number(t.value).toFixed(4) : '0'
       const category = t.category === 'erc20' ? 'Token Transfer' : t.category === 'erc721' ? 'NFT Transfer' : 'Transfer'
       const timestamp = t.metadata?.blockTimestamp || ''
-      
       let timeAgo = ''
       if (timestamp) {
         const diff = Date.now() - new Date(timestamp).getTime()
@@ -147,7 +210,6 @@ export async function POST(req: Request) {
         else if (mins < 1440) timeAgo = `${Math.floor(mins / 60)}h ago`
         else timeAgo = `${Math.floor(mins / 1440)}d ago`
       }
-
       return {
         type: category,
         asset,
@@ -160,17 +222,18 @@ export async function POST(req: Request) {
       }
     })
 
-    // Compute a simple wallet health score
     const hasApprovals = approvals.length > 0
     const walletHealth = hasApprovals ? Math.max(60, 100 - approvals.length * 10) : 100
 
     return new Response(JSON.stringify({
       balanceEth: balEth.toFixed(4),
-      balanceUsd: (balEth * 3400).toFixed(2),
+      balanceUsd: (balEth * ethPrice).toFixed(2),
+      balanceHistory: bucketData,
       activity,
       tokenCount: tokenCount + 1,
       approvals,
       walletHealth,
+      gasSpentUsd: `$${gasSpentUsd}`,
     }), { headers: { 'Content-Type': 'application/json' } })
 
   } catch (error) {

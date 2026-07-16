@@ -1,48 +1,95 @@
 'use client'
 
 import { useState } from 'react'
+import {
+  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
+} from 'recharts'
+
+type ChartPeriod = '1H' | '4H' | '1D' | '1W'
+
+const PERIOD_DAYS: Record<ChartPeriod, number> = {
+  '1H': 1,
+  '4H': 1,
+  '1D': 1,
+  '1W': 7,
+}
+
+interface ResearchResult {
+  name: string
+  symbol: string
+  price: string
+  change: string
+  isPositive: boolean
+  marketCap: string
+  volume24h: string
+  circulatingSupply: string
+  holders: string
+  aiSummary: string
+  riskAnalysis: {
+    contractAudit: string
+    liquidityLock: string
+    holderConcentration: string
+  }
+  ohlcData: { time: string; open: number; high: number; low: number; close: number }[]
+}
 
 export default function Research() {
   const [searchQuery, setSearchQuery] = useState('')
   const [loading, setLoading] = useState(false)
-  const [result, setResult] = useState<{
-    name: string;
-    symbol: string;
-    price: string;
-    change: string;
-    marketCap: string;
-    volume24h: string;
-    circulatingSupply: string;
-    holders: string;
-    aiSummary: string;
-    riskAnalysis: {
-      contractAudit: string;
-      liquidityLock: string;
-      holderConcentration: string;
+  const [chartLoading, setChartLoading] = useState(false)
+  const [result, setResult] = useState<ResearchResult | null>(null)
+  const [error, setError] = useState('')
+  const [chartPeriod, setChartPeriod] = useState<ChartPeriod>('1D')
+
+  const fetchResult = async (query: string, days: number) => {
+    setError('')
+    try {
+      const res = await fetch('/api/research', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: query.trim(), chartDays: days })
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        setError(data.error || 'Failed to find token.')
+        return null
+      }
+      return data as ResearchResult
+    } catch {
+      setError('Network error. Please try again.')
+      return null
     }
-  } | null>(null)
+  }
 
   const handleSearch = async (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && searchQuery) {
+    if (e.key === 'Enter' && searchQuery.trim()) {
       setLoading(true)
-      try {
-        const res = await fetch('/api/research', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ query: searchQuery.trim() })
-        })
-        if (!res.ok) {
-          throw new Error('Failed to research token')
-        }
-        const data = await res.json()
-        setResult(data)
-      } catch (e) {
-        console.error(e)
-        alert('Failed to find token.')
-      } finally {
-        setLoading(false)
-      }
+      setResult(null)
+      const data = await fetchResult(searchQuery, PERIOD_DAYS[chartPeriod])
+      if (data) setResult(data)
+      setLoading(false)
     }
+  }
+
+  const handlePeriodChange = async (p: ChartPeriod) => {
+    if (!result) return
+    setChartPeriod(p)
+    setChartLoading(true)
+    const data = await fetchResult(result.name, PERIOD_DAYS[p])
+    if (data) setResult(data)
+    setChartLoading(false)
+  }
+
+  const CustomTooltip = ({ active, payload, label }: any) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="bg-[#111] border border-white/10 rounded-lg px-3 py-2 text-xs">
+          <p className="text-zinc-500 mb-1">{label}</p>
+          <p className="font-bold text-brand">${Number(payload[0].value).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 4 })}</p>
+        </div>
+      )
+    }
+    return null
   }
 
   return (
@@ -60,15 +107,18 @@ export default function Research() {
               <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"></path>
             </svg>
           </div>
-          <input 
+          <input
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onKeyDown={handleSearch}
-            className="block w-full bg-surface border border-white/5 rounded-2xl py-4 pl-12 pr-4 text-white placeholder-zinc-500 focus:outline-none focus:ring-1 focus:ring-brand focus:border-brand transition-all" 
-            placeholder="Search any token, ticker, or contract address... (Press Enter)" 
-            type="text" 
+            className="block w-full bg-surface border border-white/5 rounded-2xl py-4 pl-12 pr-4 text-white placeholder-zinc-500 focus:outline-none focus:ring-1 focus:ring-brand focus:border-brand transition-all"
+            placeholder="Search any token, ticker, or contract address... (Press Enter)"
+            type="text"
           />
         </div>
+        {error && (
+          <p className="mt-3 text-red-400 text-sm font-medium">{error}</p>
+        )}
       </div>
       {/* END: SearchBar */}
 
@@ -83,17 +133,15 @@ export default function Research() {
           {/* BEGIN: HeroCard */}
           <div className="bg-surface border border-white/5 rounded-3xl p-6 mb-8 flex items-center justify-between" data-purpose="token-hero-card">
             <div className="flex items-center gap-6">
-              {/* Token Logo */}
-              <div className="w-14 h-14 bg-brand rounded-full flex items-center justify-center text-black">
-                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path d="M4 6h16M4 12h16M4 18h16" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5"></path>
-                </svg>
+              {/* Token Logo placeholder */}
+              <div className="w-14 h-14 bg-brand rounded-full flex items-center justify-center text-black font-bold text-lg">
+                {result.symbol.slice(0, 2)}
               </div>
               <div>
                 <h2 className="text-xl font-bold">{result.name} • {result.symbol}</h2>
                 <div className="flex items-center gap-2">
                   <span className="text-2xl font-bold">{result.price}</span>
-                  <span className="text-brand text-sm font-bold">{result.change}</span>
+                  <span className={`text-sm font-bold ${result.isPositive ? 'text-brand' : 'text-red-400'}`}>{result.change}</span>
                 </div>
               </div>
             </div>
@@ -104,7 +152,7 @@ export default function Research() {
           {/* END: HeroCard */}
 
           {/* BEGIN: StatsGrid */}
-          <div className="grid grid-cols-4 gap-6 mb-8" data-purpose="stats-grid">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8" data-purpose="stats-grid">
             <div className="bg-surface border border-white/5 rounded-2xl p-6">
               <p className="text-zinc-500 text-sm font-medium mb-1">Market Cap</p>
               <p className="text-2xl font-bold">{result.marketCap}</p>
@@ -124,87 +172,81 @@ export default function Research() {
           </div>
           {/* END: StatsGrid */}
 
-          {/* BEGIN: MainContentContainer */}
-          <div className="flex-1 bg-surface border border-white/5 rounded-3xl mb-8 relative overflow-hidden" data-purpose="graph-container" style={{ background: 'radial-gradient(circle at 50% 0%, rgba(204, 255, 0, 0.08) 0%, rgba(17, 17, 17, 1) 70%)', minHeight: '360px' }}>
-            <div className="flex flex-col h-full w-full p-6">
-              {/* Chart Header: Timeframes */}
-              <div className="flex items-center justify-between mb-6">
-                <div className="flex gap-2">
-                  <button className="px-3 py-1 rounded-lg bg-brand/10 text-brand text-xs font-bold">1H</button>
-                  <button className="px-3 py-1 rounded-lg hover:bg-white/5 text-zinc-500 text-xs font-medium transition-colors">4H</button>
-                  <button className="px-3 py-1 rounded-lg hover:bg-white/5 text-zinc-500 text-xs font-medium transition-colors">1D</button>
-                  <button className="px-3 py-1 rounded-lg hover:bg-white/5 text-zinc-500 text-xs font-medium transition-colors">1W</button>
-                </div>
-                <div className="flex items-center gap-4">
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-brand"></div>
-                    <span className="text-xs text-zinc-400">{result.symbol}/USD</span>
-                  </div>
-                  <span className="text-xs font-bold text-white">{result.price}</span>
-                </div>
+          {/* BEGIN: ChartContainer */}
+          <div className="bg-surface border border-white/5 rounded-3xl mb-8 p-6 relative overflow-hidden" data-purpose="graph-container" style={{ minHeight: '320px' }}>
+            {/* Chart Header */}
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex gap-2">
+                {(['1H', '4H', '1D', '1W'] as ChartPeriod[]).map(p => (
+                  <button
+                    key={p}
+                    onClick={() => handlePeriodChange(p)}
+                    className={`px-3 py-1 rounded-lg text-xs font-bold transition-colors ${chartPeriod === p ? 'bg-brand/10 text-brand' : 'hover:bg-white/5 text-zinc-500'}`}
+                  >
+                    {p}
+                  </button>
+                ))}
               </div>
-              {/* Main Chart Area */}
-              <div className="flex-1 relative flex">
-                {/* Price Axis (Right) */}
-                <div className="absolute right-0 top-0 bottom-8 w-12 flex flex-col justify-between text-[10px] text-zinc-600 border-l border-white/5 pl-2">
-                  <span className="">3,600</span>
-                  <span className="">3,500</span>
-                  <span className="text-brand font-bold">3,412</span>
-                  <span className="">3,300</span>
-                  <span className="">3,200</span>
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-brand"></div>
+                  <span className="text-xs text-zinc-400">{result.symbol}/USD</span>
                 </div>
-                {/* Chart Canvas (SVG) */}
-                <div className="flex-1 mr-12 mb-8 relative">
-                  {/* Grid Lines */}
-                  <div className="absolute inset-0 flex flex-col justify-between pointer-events-none">
-                    <div className="border-b border-white/5 w-full h-0"></div>
-                    <div className="border-b border-white/5 w-full h-0"></div>
-                    <div className="border-b border-white/5 w-full h-0"></div>
-                    <div className="border-b border-white/5 w-full h-0"></div>
-                  </div>
-                  {/* Candlesticks & Volume */}
-                  <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 100">
-                    <rect fill="#CCFF00" height="10" opacity="0.3" width="2" x="5" y="85"></rect>
-                    <rect fill="#CCFF00" height="15" opacity="0.3" width="2" x="15" y="80"></rect>
-                    <rect fill="#CCFF00" height="7" opacity="0.3" width="2" x="25" y="88"></rect>
-                    <rect fill="#CCFF00" height="20" opacity="0.3" width="2" x="35" y="75"></rect>
-                    <rect fill="#CCFF00" height="13" opacity="0.3" width="2" x="45" y="82"></rect>
-                    <rect fill="#CCFF00" height="25" opacity="0.3" width="2" x="55" y="70"></rect>
-                    <rect fill="#CCFF00" height="10" opacity="0.3" width="2" x="65" y="85"></rect>
-                    <rect fill="#CCFF00" height="17" opacity="0.3" width="2" x="75" y="78"></rect>
-                    <rect fill="#CCFF00" height="13" opacity="0.3" width="2" x="85" y="82"></rect>
-                    {/* Candlesticks */}
-                    <line stroke="#CCFF00" strokeWidth="0.5" x1="16" x2="16" y1="60" y2="80"></line>
-                    <rect fill="#CCFF00" height="10" width="3" x="14.5" y="65"></rect>
-                    <line stroke="#CCFF00" strokeWidth="0.5" x1="36" x2="36" y1="40" y2="70"></line>
-                    <rect fill="#CCFF00" height="20" width="3" x="34.5" y="45"></rect>
-                    <line stroke="#52525b" strokeWidth="0.5" x1="56" x2="56" y1="30" y2="50"></line>
-                    <rect fill="#52525b" height="10" width="3" x="54.5" y="35"></rect>
-                    <line stroke="#CCFF00" strokeWidth="0.5" x1="76" x2="76" y1="20" y2="45"></line>
-                    <rect fill="#CCFF00" height="15" width="3" x="74.5" y="25"></rect>
-                    {/* Crosshair */}
-                    <line stroke="#CCFF00" strokeDasharray="1,1" strokeWidth="0.2" x1="0" x2="100" y1="32" y2="32"></line>
-                    <line stroke="#CCFF00" strokeDasharray="1,1" strokeWidth="0.2" x1="76" x2="76" y1="0" y2="100"></line>
-                    <circle cx="76" cy="32" fill="#CCFF00" r="1.5"></circle>
-                  </svg>
-                </div>
-                {/* Time Axis (Bottom) */}
-                <div className="absolute bottom-0 left-0 right-12 h-8 flex justify-between items-center text-[10px] text-zinc-600 border-t border-white/5 pr-4">
-                  <span className="">08:00</span>
-                  <span className="">12:00</span>
-                  <span className="">16:00</span>
-                  <span className="text-zinc-400">20:00</span>
-                  <span className="">00:00</span>
-                </div>
+                <span className="text-xs font-bold text-white">{result.price}</span>
               </div>
             </div>
+            {/* Chart */}
+            <div className="h-64">
+              {chartLoading ? (
+                <div className="flex items-center justify-center h-full text-brand animate-pulse text-sm font-bold">Updating chart...</div>
+              ) : result.ohlcData && result.ohlcData.length > 0 ? (
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={result.ohlcData} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
+                    <defs>
+                      <linearGradient id="tokenGradient" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#CCFF00" stopOpacity={0.2} />
+                        <stop offset="95%" stopColor="#CCFF00" stopOpacity={0} />
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" vertical={false} />
+                    <XAxis
+                      dataKey="time"
+                      tick={{ fill: '#52525b', fontSize: 10 }}
+                      tickLine={false}
+                      axisLine={false}
+                      interval="preserveStartEnd"
+                    />
+                    <YAxis
+                      domain={['auto', 'auto']}
+                      tick={{ fill: '#52525b', fontSize: 10 }}
+                      tickLine={false}
+                      axisLine={false}
+                      width={65}
+                      tickFormatter={v => `$${v >= 1000 ? (v / 1000).toFixed(1) + 'k' : v.toFixed(2)}`}
+                    />
+                    <Tooltip content={<CustomTooltip />} />
+                    <Area
+                      type="monotone"
+                      dataKey="close"
+                      stroke="#CCFF00"
+                      strokeWidth={2}
+                      fill="url(#tokenGradient)"
+                      dot={false}
+                      activeDot={{ r: 4, fill: '#CCFF00', stroke: '#111', strokeWidth: 2 }}
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              ) : (
+                <div className="flex items-center justify-center h-full text-zinc-600 text-sm">No chart data available</div>
+              )}
+            </div>
           </div>
-          {/* END: MainContentContainer */}
+          {/* END: ChartContainer */}
 
           {/* BEGIN: BottomRow */}
-          <div className="grid grid-cols-3 gap-8 pb-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pb-8">
             {/* AI Summary */}
-            <div className="col-span-2 bg-surface border border-white/5 rounded-3xl p-8" data-purpose="ai-summary-card">
+            <div className="md:col-span-2 bg-surface border border-white/5 rounded-3xl p-8" data-purpose="ai-summary-card">
               <div className="flex items-center gap-3 mb-4">
                 <div className="text-brand">
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -218,7 +260,7 @@ export default function Research() {
               </p>
             </div>
             {/* Risk Analysis */}
-            <div className="col-span-1 bg-surface border border-white/5 rounded-3xl p-8" data-purpose="risk-analysis-card">
+            <div className="md:col-span-1 bg-surface border border-white/5 rounded-3xl p-8" data-purpose="risk-analysis-card">
               <h3 className="text-lg font-bold mb-6">Risk Analysis</h3>
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
