@@ -17,7 +17,7 @@ export function runCopilotChatService(req: CopilotChatRequest) {
   }
 
   const result = streamText({
-    model: groq('llama-3.1-8b-instant'),
+    model: groq('llama-3.3-70b-versatile'),
     messages: req.messages,
     system: `You are Sentri, a crypto security assistant integrated with OKX Onchain OS and x402 protocol architecture. 
 Your job is to analyze wallet addresses, transactions, or smart contracts provided by the user. 

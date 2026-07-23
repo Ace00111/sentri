@@ -73,7 +73,7 @@ export async function analyzeTransactionService(req: TransactionAnalysisRequest)
     };
     try {
       const { text } = await generateText({
-        model: groq('llama-3.1-8b-instant'),
+        model: groq('llama-3.3-70b-versatile'),
         system: `You are an elite smart contract auditor AI. Analyze raw transaction data. Return ONLY JSON format:
 {
   "method": "Transfer or Approve or Swap",
@@ -148,10 +148,20 @@ Input Data: ${(tx.input || '0x').substring(0, 100)}`,
       insights: [errMessage],
       rawLegacyData: {
         type: 'transaction',
-        overview: { hash: req.txHash || 'Unknown', blockNumber: 'Unknown', network: 'Ethereum', timestamp: 'Unknown', status: 'Failed' },
-        details: { from: 'Unknown', to: 'Unknown', value: 'Unknown', fee: 'Unknown', gasUsed: 'Unknown' },
-        securityAlerts: { level: 'Unknown Risk', title: 'Analysis Failed', reason: errMessage, recommendation: 'Try again later' },
-        aiExplanation: errMessage,
+        txDetails: {
+          method: 'Unknown',
+          block: 0,
+          age: 'Unknown',
+          from: req.txHash || 'Unknown',
+          to: 'Unknown',
+          amount: '0 ETH',
+          txnFee: '0 ETH',
+        },
+        chatAnalysis: {
+          riskLevel: 'Unknown',
+          explanation: errMessage,
+          redFlags: [],
+        },
       }
     };
   }

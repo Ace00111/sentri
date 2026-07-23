@@ -112,7 +112,7 @@ export async function analyzeWalletService(req: WalletAnalysisRequest): Promise<
 
     try {
       const { text } = await generateText({
-        model: groq('llama-3.1-8b-instant'),
+        model: groq('llama-3.3-70b-versatile'),
         system: `You are an elite on-chain wallet analyzer. Read the provided wallet data. Return ONLY JSON format:
 {
   "walletAge": "e.g. 2 years",

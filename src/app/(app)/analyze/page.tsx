@@ -72,31 +72,31 @@ export default function Analyze() {
             <div className="space-y-4">
               <div className="flex justify-between items-center py-1 border-b border-zinc-800/50 pb-2">
                 <span className="text-mutedText text-sm">Method</span>
-                <span className="text-white text-sm font-bold bg-zinc-900 px-2 py-1 rounded">{result.txDetails.method}</span>
+                <span className="text-white text-sm font-bold bg-zinc-900 px-2 py-1 rounded">{result.txDetails?.method || 'Unknown'}</span>
               </div>
               <div className="flex justify-between items-center py-1 border-b border-zinc-800/50 pb-2">
                 <span className="text-mutedText text-sm">Block</span>
-                <span className="text-sentriGreen text-sm font-medium">{result.txDetails.block}</span>
+                <span className="text-sentriGreen text-sm font-medium">{result.txDetails?.block || 'Unknown'}</span>
               </div>
               <div className="flex justify-between items-center py-1 border-b border-zinc-800/50 pb-2">
                 <span className="text-mutedText text-sm">Age</span>
-                <span className="text-white text-sm font-medium">{result.txDetails.age}</span>
+                <span className="text-white text-sm font-medium">{result.txDetails?.age || 'Unknown'}</span>
               </div>
               <div className="flex justify-between items-center py-1 border-b border-zinc-800/50 pb-2">
                 <span className="text-mutedText text-sm">From</span>
-                <span className="text-white text-xs font-mono truncate max-w-[120px]">{result.txDetails.from}</span>
+                <span className="text-white text-xs font-mono truncate max-w-[120px]">{result.txDetails?.from || 'Unknown'}</span>
               </div>
               <div className="flex justify-between items-center py-1 border-b border-zinc-800/50 pb-2">
                 <span className="text-mutedText text-sm">To</span>
-                <span className="text-white text-xs font-mono truncate max-w-[120px]">{result.txDetails.to}</span>
+                <span className="text-white text-xs font-mono truncate max-w-[120px]">{result.txDetails?.to || 'Unknown'}</span>
               </div>
               <div className="flex justify-between items-center py-1 border-b border-zinc-800/50 pb-2">
                 <span className="text-mutedText text-sm">Amount</span>
-                <span className="text-white text-sm font-bold">{result.txDetails.amount}</span>
+                <span className="text-white text-sm font-bold">{result.txDetails?.amount || '0 ETH'}</span>
               </div>
               <div className="flex justify-between items-center py-1 pb-2">
                 <span className="text-mutedText text-sm">Txn Fee</span>
-                <span className="text-white text-sm font-medium">{result.txDetails.txnFee}</span>
+                <span className="text-white text-sm font-medium">{result.txDetails?.txnFee || '0 ETH'}</span>
               </div>
             </div>
           </div>
@@ -120,15 +120,15 @@ export default function Analyze() {
               <div className="flex gap-3">
                 <div className="w-8 h-8 rounded-full bg-sentriGreen flex items-center justify-center shrink-0 text-black font-bold">S</div>
                 <div className="bg-sentriGreen/10 border border-sentriGreen/30 text-white p-3 rounded-lg rounded-tl-none text-sm max-w-[90%] leading-relaxed">
-                  <p className="mb-4">{result.chatAnalysis.explanation}</p>
+                  <p className="mb-4">{result.chatAnalysis?.explanation || 'Analysis unavailable.'}</p>
                   
                   <div className="mt-4 p-3 rounded bg-black/30">
                     <p className="font-bold mb-2">Risk Level: 
-                      <span className={result.chatAnalysis.riskLevel === 'High' ? 'text-red-500 ml-2' : result.chatAnalysis.riskLevel === 'Medium' ? 'text-yellow-500 ml-2' : 'text-sentriGreen ml-2'}>
-                        {result.chatAnalysis.riskLevel}
+                      <span className={result.chatAnalysis?.riskLevel === 'High' ? 'text-red-500 ml-2' : result.chatAnalysis?.riskLevel === 'Medium' ? 'text-yellow-500 ml-2' : 'text-sentriGreen ml-2'}>
+                        {result.chatAnalysis?.riskLevel || 'Unknown'}
                       </span>
                     </p>
-                    {result.chatAnalysis.redFlags?.length > 0 && (
+                    {result.chatAnalysis?.redFlags?.length > 0 && (
                       <ul className="list-disc pl-5 space-y-1 text-red-400">
                         {result.chatAnalysis.redFlags.map((flag: string, i: number) => (
                           <li key={i}>{flag}</li>
