@@ -27,6 +27,7 @@ npm install
 2. Configure your environment variables in `.env.local`:
 ```env
 # OKX Data
+
 OKX_API_KEY="your-api-key"
 OKX_SECRET_KEY="your-secret-key"
 OKX_PASSPHRASE="your-passphrase"
