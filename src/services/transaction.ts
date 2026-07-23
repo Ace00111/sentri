@@ -145,7 +145,14 @@ Input Data: ${(tx.input || '0x').substring(0, 100)}`,
       summary: 'Transaction analysis encountered an RPC error.',
       recommendation: 'Retry analysis or inspect block explorer directly.',
       details: { error: errMessage },
-      insights: ['RPC provider query timed out or failed.'],
+      insights: [errMessage],
+      rawLegacyData: {
+        type: 'transaction',
+        overview: { hash: req.txHash || 'Unknown', blockNumber: 'Unknown', network: 'Ethereum', timestamp: 'Unknown', status: 'Failed' },
+        details: { from: 'Unknown', to: 'Unknown', value: 'Unknown', fee: 'Unknown', gasUsed: 'Unknown' },
+        securityAlerts: { level: 'Unknown Risk', title: 'Analysis Failed', reason: errMessage, recommendation: 'Try again later' },
+        aiExplanation: errMessage,
+      }
     };
   }
 }

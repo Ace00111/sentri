@@ -516,29 +516,6 @@ export default function Research() {
             </div>
           </div>
 
-          {/* BOTTOM AI VERDICT */}
-          <div className={`p-8 rounded-3xl border flex flex-col items-center text-center ${getVerdictBg(result.verdict.status)}`}>
-            <p className="text-sm font-bold text-zinc-400 tracking-widest uppercase mb-2">Sentri Verdict</p>
-            <h2 className={`text-3xl font-bold mb-4 ${getVerdictColor(result.verdict.status)} flex items-center gap-3`}>
-              {result.verdict.status === 'SAFE TO EXPLORE' && <span className="w-3 h-3 rounded-full bg-brand animate-pulse"></span>}
-              {result.verdict.status === 'PROCEED WITH CAUTION' && <span className="w-3 h-3 rounded-full bg-orange-400 animate-pulse"></span>}
-              {result.verdict.status === 'DO NOT INTERACT' && <span className="w-3 h-3 rounded-full bg-red-500 animate-pulse"></span>}
-              {result.verdict.status}
-            </h2>
-            <p className="text-zinc-300 max-w-2xl text-lg mb-8">{result.verdict.message}</p>
-            
-            <div className="flex flex-wrap items-center justify-center gap-4">
-              <button className="px-6 py-3 bg-white text-black font-bold rounded-xl hover:bg-zinc-200 transition-colors">
-                Analyze Transaction
-              </button>
-              <button className="px-6 py-3 bg-surface border border-white/10 hover:border-brand/50 text-white font-bold rounded-xl transition-colors">
-                Track Token
-              </button>
-              <button className="px-6 py-3 bg-surface border border-white/10 hover:border-white/30 text-white font-bold rounded-xl transition-colors">
-                Share Report
-              </button>
-            </div>
-          </div>
         </div>
       )}
     </div>

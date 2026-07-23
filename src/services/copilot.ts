@@ -5,6 +5,17 @@ import { getOkxClient } from '@/utils/okx';
 import { CopilotChatRequest } from '@/types/analysis';
 
 export function runCopilotChatService(req: CopilotChatRequest) {
+  if (!process.env.GROQ_API_KEY) {
+    const encoder = new TextEncoder();
+    const stream = new ReadableStream({
+      start(controller) {
+        controller.enqueue(encoder.encode('0:"API Key Missing. Please set GROQ_API_KEY in your .env.local file to use the AI Copilot."\n'));
+        controller.close();
+      }
+    });
+    return new Response(stream, { headers: { 'Content-Type': 'text/plain; charset=utf-8', 'x-vercel-ai-data-stream': 'v1' } });
+  }
+
   const result = streamText({
     model: groq('llama-3.1-8b-instant'),
     messages: req.messages,

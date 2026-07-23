@@ -203,7 +203,16 @@ Transfers: ${JSON.stringify(transfersSummary, null, 2)}`,
       summary: 'Wallet query encountered RPC failure.',
       recommendation: 'Check RPC provider or verify network connection.',
       details: { error: errMessage },
-      insights: ['RPC node call failed.'],
+      insights: [errMessage],
+      rawLegacyData: {
+        type: 'wallet',
+        overview: { network: 'Ethereum', walletAge: 'Unknown', totalTransactions: 'Unknown' },
+        portfolio: { totalBalance: 'Unknown', eth: '0 ETH', tokensHeld: 'Unknown', nfts: 'Unknown' },
+        behavior: { pattern: 'Unknown', mostlyInteractsWith: [], suspiciousBehavior: [] },
+        securityAlerts: { level: 'Unknown Risk', title: 'Analysis Failed', reason: errMessage, recommendation: 'Try again later' },
+        aiExplanation: errMessage,
+        history: []
+      }
     };
   }
 }

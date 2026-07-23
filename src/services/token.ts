@@ -23,6 +23,30 @@ export async function researchTokenService(req: TokenResearchRequest & { query?:
       recommendation: 'Provide a valid token symbol (e.g. BTC, ETH, OKB) or contract address.',
       details: {},
       insights: ['Empty token search query.'],
+      rawLegacyData: {
+        name: 'Unknown',
+        symbol: 'Unknown',
+        network: 'Unknown',
+        contractAddress: 'Unknown',
+        price: '0',
+        change: '0',
+        isPositive: false,
+        marketCap: '0',
+        volume24h: '0',
+        circulatingSupply: '0',
+        holders: '0',
+        aiSummary: 'Missing query',
+        strengths: [],
+        risks: [],
+        riskScore: 50,
+        riskLevel: 'Unknown',
+        riskReason: 'Missing query',
+        securityChecks: { honeypot: false, proxyContract: false, mintable: false },
+        holderAnalysis: { top10Holders: 'Unknown', whaleConcentration: 'Unknown', creatorBalance: 'Unknown' },
+        liquidityHealth: { dex: 'Unknown', liquidityAmount: 'Unknown', lpStatus: 'Unlocked', trading: 'Suspicious' },
+        verdict: { status: 'DO NOT INTERACT', message: 'Missing query' },
+        ohlcData: []
+      }
     };
   }
 
