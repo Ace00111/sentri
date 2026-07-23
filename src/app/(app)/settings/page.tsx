@@ -2,7 +2,7 @@
 
 import { useAccount, useDisconnect } from 'wagmi'
 import { useConnectModal } from '@rainbow-me/rainbowkit'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { requestNotificationPermission } from '@/utils/notifications'
 import { useLanguage } from '@/contexts/LanguageContext'
 
@@ -12,17 +12,21 @@ export default function Settings() {
   const { openConnectModal } = useConnectModal()
 
   const { language, setLanguage, t } = useLanguage()
-  const [notifications, setNotifications] = useState(true)
-  const [strictSecurity, setStrictSecurity] = useState(false)
+  const [notifications, setNotifications] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('sentri_notifications')
+      if (saved !== null) return saved === 'true'
+    }
+    return true
+  })
 
-  // Load from local storage
-  useEffect(() => {
-    const savedNotifs = localStorage.getItem('sentri_notifications')
-    if (savedNotifs !== null) setNotifications(savedNotifs === 'true')
-    
-    const savedSecurity = localStorage.getItem('sentri_strict_security')
-    if (savedSecurity !== null) setStrictSecurity(savedSecurity === 'true')
-  }, [])
+  const [strictSecurity, setStrictSecurity] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('sentri_strict_security')
+      if (saved !== null) return saved === 'true'
+    }
+    return false
+  })
 
   // Save to local storage
   const toggleNotifications = () => {

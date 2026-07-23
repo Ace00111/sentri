@@ -1,6 +1,6 @@
 'use client'
 
-import React, { createContext, useContext, useState, useEffect } from 'react'
+import React, { createContext, useContext, useState } from 'react'
 
 type Language = 'English (US)' | 'Spanish' | 'French' | 'Japanese'
 
@@ -83,7 +83,7 @@ const translations: Record<Language, Record<string, string>> = {
     walletNotConnected: '未接続',
     language: '言語',
     notifications: '通知',
-    securityPreferences: 'セキュリティ設定',
+    securityPreferences: '設定',
     manage: '管理',
     walletConnection: 'ウォレット接続',
     transactionAnalyzer: 'トランザクションアナライザー',
@@ -100,22 +100,25 @@ const LanguageContext = createContext<LanguageContextType>({
 })
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [language, setLanguageState] = useState<Language>('English (US)')
-
-  useEffect(() => {
-    const saved = localStorage.getItem('sentri_language') as Language
-    if (saved && translations[saved]) {
-      setLanguageState(saved)
+  const [language, setLanguageState] = useState<Language>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('sentri_language') as Language
+      if (saved && translations[saved]) {
+        return saved
+      }
     }
-  }, [])
+    return 'English (US)'
+  })
 
   const setLanguage = (lang: Language) => {
     setLanguageState(lang)
-    localStorage.setItem('sentri_language', lang)
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('sentri_language', lang)
+    }
   }
 
   const t = (key: string) => {
-    return translations[language][key] || key
+    return translations[language]?.[key] || key
   }
 
   return (

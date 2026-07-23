@@ -133,7 +133,8 @@ export default function Research() {
     }
   }
 
-  const CustomTooltip = ({ active, payload, label }: any) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?: any; label?: string | number }) => {
     if (active && payload && payload.length) {
       return (
         <div className="bg-[#111] border border-white/10 rounded-lg px-3 py-2 text-xs shadow-xl">

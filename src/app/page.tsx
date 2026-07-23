@@ -314,7 +314,7 @@ export default function Home() {
             <div className="absolute inset-0 hero-glow opacity-50 pointer-events-none"></div>
             <h2 className="text-4xl md:text-5xl font-bold mb-6 relative z-10">Start making safer crypto decisions today</h2>
             <p className="text-textSecondary mb-10 max-w-xl mx-auto relative z-10">
-              Join hundreds of thousands of traders protected by Sentri's AI.
+              Join hundreds of thousands of traders protected by Sentri&apos;s AI.
             </p>
             <ConnectButton.Custom>
                 {({ account, chain, openConnectModal, mounted }) => {

@@ -28,6 +28,25 @@ interface BalancePoint {
   value: number
 }
 
+interface CustomTooltipProps {
+  active?: boolean
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  payload?: any
+  label?: string | number
+}
+
+const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-cardBg border border-white/10 rounded-lg px-3 py-2 text-xs">
+        <p className="text-mutedText mb-1">{label}</p>
+        <p className="font-bold text-sentriGreen">${Number(payload[0].value).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+      </div>
+    )
+  }
+  return null
+}
+
 interface DashboardData {
   balanceEth: string
   balanceUsd: string
@@ -69,21 +88,16 @@ export default function Dashboard() {
   }, [])
 
   useEffect(() => {
-    if (!address) { setData(null); return }
-    fetchData(address, period)
-  }, [address, period, fetchData])
-
-  const CustomTooltip = ({ active, payload, label }: any) => {
-    if (active && payload && payload.length) {
-      return (
-        <div className="bg-cardBg border border-white/10 rounded-lg px-3 py-2 text-xs">
-          <p className="text-mutedText mb-1">{label}</p>
-          <p className="font-bold text-sentriGreen">${Number(payload[0].value).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
-        </div>
-      )
+    let isMounted = true
+    if (address) {
+      Promise.resolve().then(() => {
+        if (isMounted) {
+          fetchData(address, period)
+        }
+      })
     }
-    return null
-  }
+    return () => { isMounted = false }
+  }, [address, period, fetchData])
 
   return (
     <>
@@ -151,7 +165,7 @@ export default function Dashboard() {
                       width={60}
                       tickFormatter={v => `$${v >= 1000 ? (v / 1000).toFixed(1) + 'k' : v.toFixed(0)}`}
                     />
-                    <Tooltip content={<CustomTooltip />} />
+                    <Tooltip content={CustomTooltip} />
                     <Area
                       type="monotone"
                       dataKey="value"

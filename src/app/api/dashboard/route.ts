@@ -1,5 +1,24 @@
 export const maxDuration = 30
 
+interface Transfer {
+  hash: string
+  from: string
+  to: string
+  value: number | null
+  asset: string | null
+  category: string
+  blockNum: string
+  direction: 'in' | 'out'
+  metadata?: {
+    blockTimestamp: string
+  }
+  rawContract?: {
+    value?: string
+    decimal?: string
+    address?: string
+  }
+}
+
 export async function POST(req: Request) {
   try {
     const { address, period = '1D' } = await req.json()
@@ -37,9 +56,9 @@ export async function POST(req: Request) {
     const balEth = Number(balWei) / 1e18
 
     // 3. Fetch all transfers (in + out) for history & activity
-    let outgoing: any[] = []
-    let incoming: any[] = []
-    let allTransfers: any[] = []
+    let outgoing: Array<Transfer> = []
+    let incoming: Array<Transfer> = []
+    let allTransfers: Array<Transfer> = []
 
     if (apiKey) {
       const [outRes, inRes] = await Promise.all([
@@ -93,7 +112,7 @@ export async function POST(req: Request) {
     // Walk back in time: start from current balance, undo transfers
     let runningBalEth = balEth
     const relevantTransfers = allTransfers
-      .filter(t => {
+      .filter((t) => {
         const ts = t.metadata?.blockTimestamp ? new Date(t.metadata.blockTimestamp).getTime() : 0
         return ts > now - periodMs
       })
@@ -139,15 +158,15 @@ export async function POST(req: Request) {
       })
       const tokenData = await tokenRes.json()
       tokenCount = (tokenData.result?.tokenBalances || []).filter(
-        (t: any) => t.tokenBalance !== '0x0000000000000000000000000000000000000000000000000000000000000000'
+        (t: Record<string, unknown>) => t.tokenBalance !== '0x0000000000000000000000000000000000000000000000000000000000000000'
       ).length
     }
 
     // 6. ERC20 interactions for risky contracts panel
-    let approvals: any[] = []
+    let approvals: Array<{ address: string; shortAddress: string; asset: string }> = []
     if (apiKey) {
       try {
-        const uniqueContracts = new Map<string, any>()
+        const uniqueContracts = new Map<string, { address: string; shortAddress: string; asset: string }>()
         for (const t of outgoing) {
           if (t.rawContract?.address && !uniqueContracts.has(t.rawContract.address)) {
             uniqueContracts.set(t.rawContract.address, {
@@ -196,7 +215,7 @@ export async function POST(req: Request) {
     }
 
     // 8. Format activity for display
-    const activity = allTransfers.slice(0, 5).map((t: any) => {
+    const activity = allTransfers.slice(0, 5).map((t) => {
       const isIncoming = t.direction === 'in'
       const asset = t.asset || 'ETH'
       const value = t.value != null ? Number(t.value).toFixed(4) : '0'

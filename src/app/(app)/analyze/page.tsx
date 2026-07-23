@@ -5,9 +5,10 @@ import { sendLocalNotification } from '@/utils/notifications'
 import { useLanguage } from '@/contexts/LanguageContext'
 
 export default function Analyze() {
+  const { t } = useLanguage()
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
-  const { t } = useLanguage()
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [result, setResult] = useState<any>(null)
 
   const handleAnalyze = async () => {
@@ -240,23 +241,23 @@ export default function Analyze() {
                   <span>🧠</span> AI Explanation
                 </h3>
                 <p className="text-white text-sm leading-relaxed italic">
-                  "{result.aiExplanation}"
+                  &quot;{String(result.aiExplanation || '')}&quot;
                 </p>
               </div>
 
               <div className="bg-cardBg border border-zinc-800/50 rounded-xl p-6">
                 <h3 className="font-bold mb-6">Recent Transactions History</h3>
                 <div className="space-y-3">
-                  {result.history?.length > 0 ? (
-                    result.history.map((tx: any, i: number) => (
+                  {Array.isArray(result.history) && result.history.length > 0 ? (
+                    (result.history as Array<Record<string, unknown>>).map((tx, i: number) => (
                       <div key={i} className="flex justify-between items-center p-3 hover:bg-zinc-900 rounded-lg border border-transparent hover:border-zinc-800 transition-colors">
                         <div className="flex flex-col">
-                          <span className="text-white text-sm font-medium">To: {tx.to ? tx.to.substring(0, 12) + '...' : 'Contract Creation'}</span>
-                          <span className="text-mutedText text-xs font-mono">{tx.hash ? tx.hash.substring(0, 16) + '...' : ''}</span>
+                          <span className="text-white text-sm font-medium">To: {typeof tx.to === 'string' ? tx.to.substring(0, 12) + '...' : 'Contract Creation'}</span>
+                          <span className="text-mutedText text-xs font-mono">{typeof tx.hash === 'string' ? tx.hash.substring(0, 16) + '...' : ''}</span>
                         </div>
                         <div className="flex flex-col items-end">
-                          <span className="text-white font-bold text-sm">{tx.amount || '0'} {tx.asset || 'ETH'}</span>
-                          <span className="text-mutedText text-xs">{tx.date || 'Recently'}</span>
+                          <span className="text-white font-bold text-sm">{String(tx.amount || '0')} {String(tx.asset || 'ETH')}</span>
+                          <span className="text-mutedText text-xs">{String(tx.date || 'Recently')}</span>
                         </div>
                       </div>
                     ))

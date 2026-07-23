@@ -19,7 +19,7 @@ export default function ScamChecker() {
         <h2 className="text-2xl font-bold mb-4">Coming Soon</h2>
         <p className="text-mutedText leading-relaxed">
           We are currently training our AI models on millions of malicious contracts. 
-          Soon, you'll be able to instantly scan any token, NFT, or protocol for honeypots, rug pulls, and hidden backdoors.
+          Soon, you&apos;ll be able to instantly scan any token, NFT, or protocol for honeypots, rug pulls, and hidden backdoors.
         </p>
       </div>
       {/* END: HeroCard */}
